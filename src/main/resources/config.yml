@@ -1,0 +1,30 @@
+attributes:
+  styleCell: 0
+  titleCell: 5
+  quesType: 4
+  ans: 6
+  optBeg: 7
+  optEnd: 12
+  explain: 13
+  errCell: 15
+parameters:
+  T: 对
+  F: 错
+  linesize: 100
+  easy: 2
+  hard: 5
+  delimeter:
+
+#attributes:
+#  styleCell: 0
+#  titleCell: 2
+#  quesType: 1
+#  ans: 9
+#  optBeg: 3
+#  optEnd: 8
+#  explain: 10
+#  errCell: 11
+#parameters:
+#  T: T
+#  F: F
+#  delimeter: '_'
