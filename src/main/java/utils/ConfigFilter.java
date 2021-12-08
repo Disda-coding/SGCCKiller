@@ -15,6 +15,6 @@ import java.io.FilenameFilter;
 public class ConfigFilter implements FilenameFilter {
     @Override
     public boolean accept(File dir, String name) {
-        return name.endsWith(".yml")||name.endsWith(".yaml");
+        return name.endsWith(".yml") || name.endsWith(".yaml");
     }
 }

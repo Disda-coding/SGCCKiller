@@ -7,6 +7,14 @@ public class Utils {
         if (arg==null&&arg.equals("")) return true;
         return false;
     }
+    public static String trim(String s){
+        String result = "";
+        if(null!=s && !"".equals(s)){
+            result = s.replaceAll("^[　*| *| *|//s*]*", "").replaceAll("[　*| *| *|//s*]*$", "");
+        }
+        return result;
+    }
+
     public static void printLongStuff(String s,int linesize){
         for(int i=0;i<((int)s.length()/linesize)+1;i++){
             if (i==(int)s.length()/linesize){System.out.println(s.substring(i*linesize));}

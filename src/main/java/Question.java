@@ -7,25 +7,23 @@ public class Question {
     private String answer;
     private String type;
     private double errTimes;
-    ExcelUtils eu;
 
 
     private String explains;
     public ArrayList<String> ops;
 
 
-
-    public Question(String title, String answer, String type, ArrayList<String> ops, String explains, double errTimes,String del) {
+    public Question(String title, String answer, String type, ArrayList<String> ops, String explains, double errTimes, String del) {
         this.title = title;
         this.type = type;
-        if (this.type.equals("多选题") && del!=null)
-            this.answer = answer.replaceAll(del,"");
+        if (this.type.equals("多选题") && del != null)
+            this.answer = answer.replaceAll(del, "");
 
         else
-            this.answer=answer;
-        this.explains=explains;
+            this.answer = answer;
+        this.explains = explains;
         this.ops = ops;
-        this.errTimes=errTimes;
+        this.errTimes = errTimes;
     }
 
     public String getTitle() {
@@ -45,7 +43,9 @@ public class Question {
     }
 
 
-    public String getExplains() { return explains; }
+    public String getExplains() {
+        return explains;
+    }
 
     //要重写equals方法以及hashCode方法，才能在set集合中保证题目不重复
     @Override
