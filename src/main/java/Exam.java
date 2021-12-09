@@ -59,7 +59,8 @@ public class Exam {
             end = Integer.valueOf(nums[1]);
         } else if(nums.length == 1){
             if(nums[0].equals("")) test(beg,end,0);
-            beg = end = Integer.valueOf(nums[0]);
+
+            else beg = end = Integer.valueOf(nums[0]);
         }
         test(beg, end, 0);
     }
@@ -96,7 +97,11 @@ public class Exam {
                 System.out.println("回答正确");
                 System.out.println();
                 //printExplains(que);
-            } else {
+            } else if(ans.equals('S')){
+                System.out.println("Reset the ERR times");
+                eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -1.0, eu.styleCell);
+            }
+            else {
                 System.out.println("正确答案：" + que.getAnswer());
                 printExplains(que);
                 System.out.println();

@@ -178,19 +178,24 @@ public class ExcelUtils {
             XSSFRow row = sheet.getRow(i);
             String cell = row.getCell(caseCellNum).toString(); // 2 for que
             if (cell.equals(caseName)) {
-                double errTimes = Double.valueOf(row.getCell(errCellNum).toString()) + opt; // 11 for que
-                row.getCell(errCellNum).setCellValue(errTimes);
-                CellStyle style = workbook.createCellStyle();
-                if (errTimes <= easy) {
-                    fillCell(row, style, styleCell, new HSSFColor.GOLD().getIndex());
-                } else if (errTimes > easy && errTimes <= median) {
-                    fillCell(row, style, styleCell, new HSSFColor.LIGHT_ORANGE().getIndex());
-                } else if(errTimes > median && errTimes <= hard ){
-                    fillCell(row, style, styleCell, new HSSFColor.ORANGE().getIndex());
-                }else if (errTimes >hard){
-                    fillCell(row, style, styleCell, new HSSFColor.RED().getIndex());
+                if(opt>=0.0){
+                    double errTimes = Double.valueOf(row.getCell(errCellNum).toString()) + opt; // 11 for que
+                    row.getCell(errCellNum).setCellValue(errTimes);
+                    CellStyle style = workbook.createCellStyle();
+                    if (errTimes <= easy) {
+                        fillCell(row, style, styleCell, new HSSFColor.GOLD().getIndex());
+                    } else if (errTimes > easy && errTimes <= median) {
+                        fillCell(row, style, styleCell, new HSSFColor.LIGHT_ORANGE().getIndex());
+                    } else if(errTimes > median && errTimes <= hard ){
+                        fillCell(row, style, styleCell, new HSSFColor.ORANGE().getIndex());
+                    }else if (errTimes >hard){
+                        fillCell(row, style, styleCell, new HSSFColor.RED().getIndex());
+                    }
+                    break;
+                }else{
+                    row.getCell(errCellNum).setCellValue(0.0);
                 }
-                break;
+
             }
         }
     }

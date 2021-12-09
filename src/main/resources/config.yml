@@ -11,7 +11,7 @@ parameters:
   qStart: 0 # 标题所在行
   T: 对
   F: 错
-  linesize: 100
+  linesize: 70
   easy: 2
   median: 5
   hard: 7
