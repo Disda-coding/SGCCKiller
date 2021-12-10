@@ -26,7 +26,7 @@ public class ExcelUtils {
 
     private XSSFSheet sheet;
     private XSSFWorkbook workbook;
-    int styleCell, titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy,median, hard, qStart;
+    int styleCell, titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy,median, hard, qStart,calTime;
     String T, F, del;
 
 
@@ -88,6 +88,7 @@ public class ExcelUtils {
             median= (Integer) para.get("median");
             hard = (Integer) para.get("hard");
             qStart = (Integer) para.get("qStart");
+            calTime = (Integer) para.get("calTime");
         }
     }
 

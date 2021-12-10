@@ -57,15 +57,22 @@ public class Exam {
         if (nums.length == 2) {
             beg = Integer.valueOf(nums[0]);
             end = Integer.valueOf(nums[1]);
-        } else if(nums.length == 1){
-            if(nums[0].equals("")) test(beg,end,0);
 
-            else beg = end = Integer.valueOf(nums[0]);
-        }
-        test(beg, end, 0);
+        } else if(nums.length == 1){
+            if(nums[0].equals("")) {
+                test(beg,end,0);
+                return;
+            }
+            else {
+                beg = end = Integer.valueOf(nums[0]);
+
+            }
+
+        } test(beg, end, 0);
     }
 
     public void test(int beg, int end, int times) {
+        long sTime = System.currentTimeMillis();
         Scanner input = new Scanner(System.in);
         int all = 0;
         int err = 0;
@@ -109,8 +116,11 @@ public class Exam {
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, 1.0, eu.styleCell);
             }
         }
+        long eTime = System.currentTimeMillis();
         double res = (all - err + 0.0) / (all + 0.0) * 100;
         System.out.println("\n您的得分： " + res);
+        if(eu.calTime==1)
+            System.out.println("做题时长"+(eTime-sTime)/1000+"S");
     }
 
     public void printExplains(Question que) {

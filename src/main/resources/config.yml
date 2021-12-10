@@ -15,5 +15,6 @@ parameters:
   easy: 2
   median: 5
   hard: 7
+  calTime: 1
   delimeter:
 
