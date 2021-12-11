@@ -180,7 +180,7 @@ public class ExcelUtils {
     public Question mixOrder(String queTitle, String queAns, String queType, ArrayList<String> ops, String explains, double errTimes, String del) {
         StringBuilder sb = new StringBuilder(queAns);
 //        System.out.println("1"+queAns);
-        if(ops.size()!=0 ){
+        if(ops.size()!=0){
             sb=new StringBuilder();
             HashMap<Integer,String> map = new HashMap<>();
             for (int i = 0; i < ops.size(); i++) {
@@ -207,6 +207,7 @@ public class ExcelUtils {
 //            System.out.println("sb"+sb);
 
         }
+
         return new Question(queTitle, sb.toString(), queType, ops, explains, errTimes, del);
     }
 
