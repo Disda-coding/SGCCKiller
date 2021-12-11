@@ -7,6 +7,7 @@ attributes:
   optEnd: 12
   explain: 13
   errCell: 15
+  record: 16
 parameters:
   qStart: 0 # 标题所在行
   T: 对
@@ -16,5 +17,6 @@ parameters:
   median: 5
   hard: 7
   calTime: 1
+  isOrder: 0
   delimeter:
 

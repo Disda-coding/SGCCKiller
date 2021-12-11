@@ -1,3 +1,4 @@
+
 import utils.ExcelFilter;
 import utils.Utils;
 
@@ -5,8 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Exam {
     private ArrayList<Question> questions = new ArrayList();
@@ -119,8 +119,15 @@ public class Exam {
         long eTime = System.currentTimeMillis();
         double res = (all - err + 0.0) / (all + 0.0) * 100;
         System.out.println("\n您的得分： " + res);
-        if(eu.calTime==1)
-            System.out.println("做题时长"+(eTime-sTime)/1000+"S");
+        String out="";
+        if(eu.calTime==1){
+            System.out.println("做题时长约为"+(eTime-sTime)/1000/60.0+"Min");
+            out = "您一共做了: "+all+"题\t您的得分： " + res+"\t做题时长约为"+(eTime-sTime)/1000/60.0+"Min";
+            eu.recording(out);
+        }
+
+
+
     }
 
     public void printExplains(Question que) {
@@ -144,17 +151,19 @@ public class Exam {
 
     public static void main(String[] args) throws IOException {
         File dir = new File(ExcelUtils.class.getClassLoader().getResource(".").getPath());
-        String[] names = dir.list(new ExcelFilter());
+        String[] name = dir.list(new ExcelFilter());
+        List<String> names =  Arrays.asList(name);
+        Collections.sort(names);
         Scanner input = new Scanner(System.in);
         boolean flag = true;
         String url = null;
         while (flag) {
             System.out.println("请选择要打开的题库");
-            for (int i = 0; i < names.length; i++)
-                System.out.println(i + 1 + ". " + names[i]);
+            for (int i = 0; i < names.size(); i++)
+                System.out.println(i + 1 + ". " + names.get(i));
             int select = Integer.parseInt(input.nextLine());
-            if (select >= 1 && select <= names.length) {
-                url = ExcelUtils.class.getClassLoader().getResource(names[select - 1]).getPath();
+            if (select >= 1 && select <= names.size()) {
+                url = ExcelUtils.class.getClassLoader().getResource(names.get(select-1)).getPath();
                 //解决中文乱码问题
                 url = URLDecoder.decode(url, "utf-8");
                 flag = false;
@@ -171,7 +180,8 @@ public class Exam {
             System.out.println("*********  1.测试全部题目  **********");
             System.out.println("*********  2.测试错误题目  **********");
             System.out.println("********   3.显示题目与答案  ********");
-            System.out.println("*********  4.   退出     **********");
+            System.out.println("*********   4.查看历史得分  *********");
+            System.out.println("*********  5.   退出     **********");
             String opt;
             opt = input.nextLine();
             if (opt.equals("1")) {
@@ -183,7 +193,10 @@ public class Exam {
                 ex.testError(Integer.valueOf(times));
             } else if (opt.equals("3")) {
                 ex.printAll();
-            } else {
+            } else if(opt.equals("4")){
+                ex.eu.showRecords();
+            }
+            else {
                 System.out.println("Bye Bye!");
                 exitFlag = true;
             }

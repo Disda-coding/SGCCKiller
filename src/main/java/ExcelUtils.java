@@ -2,20 +2,18 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.yaml.snakeyaml.Yaml;
 import utils.ConfigFilter;
-import utils.ExcelFilter;
 import utils.Utils;
 
 import java.io.*;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 enum quesType {
     OBJ,
@@ -26,7 +24,7 @@ public class ExcelUtils {
 
     private XSSFSheet sheet;
     private XSSFWorkbook workbook;
-    int styleCell, titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy,median, hard, qStart,calTime;
+    int styleCell, titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy,median, hard, qStart,calTime,isOrder,record;
     String T, F, del;
 
 
@@ -79,6 +77,7 @@ public class ExcelUtils {
             optEnd = (Integer) attr.get("optEnd");
             explain = (Integer) attr.get("explain");
             errCell = (Integer) attr.get("errCell");
+            record = (Integer) attr.get("record");
             Map para = (Map<String, Object>) map.get("parameters");
             T = (String) para.get("T");
             F = (String) para.get("F");
@@ -89,6 +88,7 @@ public class ExcelUtils {
             hard = (Integer) para.get("hard");
             qStart = (Integer) para.get("qStart");
             calTime = (Integer) para.get("calTime");
+            isOrder = (Integer) para.get("isOrder");
         }
     }
 
@@ -139,21 +139,62 @@ public class ExcelUtils {
 
             String[] opsInExcel = new String[optEnd - optBeg + 1];
             for (int j = optBeg; j <= optEnd; j++) {
-                if (row.getCell(j) ==null || row.getCell(j).toString().equals(""))
+                if (row.getCell(j) ==null || row.getCell(j).toString().trim().equals(""))
                     opsInExcel[j - optBeg] = "";
                 else
                     opsInExcel[j - optBeg] = row.getCell(j).toString();
             }
             for (int j = 0; j < optEnd - optBeg + 1; j++) {
-                if (!Utils.isNull(opsInExcel[j])) ops.add(opsInExcel[j]);
+                if (!Utils.isNull(opsInExcel[j])){
+                    ops.add(opsInExcel[j]);
+                }
             }
             if (qType == quesType.OBJ && (queType.equals("问答题") || queType.equals("填空题")))
                 continue;
-            else
-                questions.add(new Question(queTitle, queAns, queType, ops, explains, errTimes, del));
+            else{
+                if(isOrder==1){
+                    questions.add(new Question(queTitle, queAns, queType, ops, explains, errTimes, del));
+                }else{
+                    questions.add(mixOrder(queTitle, queAns, queType, ops, explains, errTimes, del));
+                }
+            }
+
 
         }
         return max_err;
+    }
+
+//    HashMap mapping = new HashMap(){
+//        {
+//            mapping.put(0,'A');
+//            mapping.put(1,'B');
+//            mapping.put(2,'C');
+//            mapping.put(3,'D');
+//            mapping.put(4,'E');
+//            mapping.put(5,'F');
+//            mapping.put(6,'G');
+//            mapping.put(7,'H');
+//
+//        }
+//    };
+    public Question mixOrder(String queTitle, String queAns, String queType, ArrayList<String> ops, String explains, double errTimes, String del) {
+        if(ops.size()!=0){
+
+            HashMap<Integer,String> map = new HashMap<>();
+            for (int i = 0; i < ops.size(); i++) {
+
+                map.put(i,ops.get(i));
+            }
+            String ans = map.get((int)queAns.charAt(0)-65);
+            Collections.shuffle(ops);
+            for (int i = 0; i < ops.size(); i++) {
+
+                if (ops.get(i).equals(ans))
+                    queAns = (char)(i+65)+"";
+            }
+
+        }
+        return new Question(queTitle, queAns, queType, ops, explains, errTimes, del);
     }
 
     public void fillCell(XSSFRow row, CellStyle style, int styleCell, short color) {
@@ -201,4 +242,29 @@ public class ExcelUtils {
         }
     }
 
+    public void recording(String out) {
+        int rows = sheet.getPhysicalNumberOfRows();
+        for (int i = 0; i < rows; i++) {
+            XSSFRow row = sheet.getRow(i);
+            XSSFCell cell = row.getCell(record);
+            if (cell==null) {
+                row.createCell(record);
+                row.getCell(record).setCellValue(out);
+                break;
+            }
+        }
+    }
+
+    public void showRecords() {
+        int rows = sheet.getPhysicalNumberOfRows();
+        for (int i = 0; i < rows; i++) {
+            XSSFRow row = sheet.getRow(i);
+            XSSFCell cell = row.getCell(record);
+            if (cell!=null) {
+                System.out.println(cell);
+            }else {
+                break;
+            }
+        }
+    }
 }

@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class Utils {
     public static boolean isNull(String arg){
-        if (arg==null&&arg.equals("")) return true;
+        if (arg==null||arg.equals("")) return true;
         return false;
     }
     public static String trim(String s){
@@ -25,4 +25,6 @@ public class Utils {
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
     }
+
+
 }
