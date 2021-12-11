@@ -180,7 +180,7 @@ public class Exam {
             System.out.println("*********  1.测试全部题目  **********");
             System.out.println("*********  2.测试错误题目  **********");
             System.out.println("********   3.显示题目与答案  ********");
-            System.out.println("*********   4.查看历史得分  *********");
+            System.out.println("*********  4.查看历史得分  **********");
             System.out.println("*********  5.   退出     **********");
             String opt;
             opt = input.nextLine();

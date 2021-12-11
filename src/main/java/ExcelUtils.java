@@ -178,23 +178,36 @@ public class ExcelUtils {
 //        }
 //    };
     public Question mixOrder(String queTitle, String queAns, String queType, ArrayList<String> ops, String explains, double errTimes, String del) {
-        if(ops.size()!=0){
-
+        StringBuilder sb = new StringBuilder(queAns);
+//        System.out.println("1"+queAns);
+        if(ops.size()!=0 ){
+            sb=new StringBuilder();
             HashMap<Integer,String> map = new HashMap<>();
             for (int i = 0; i < ops.size(); i++) {
-
                 map.put(i,ops.get(i));
             }
-            String ans = map.get((int)queAns.charAt(0)-65);
+            ArrayList<String> ans = new ArrayList<>();
+            for(int i=0;i<queAns.length();i++){
+                ans.add(map.get((int)queAns.charAt(i)-65));
+            }
             Collections.shuffle(ops);
+
             for (int i = 0; i < ops.size(); i++) {
 
-                if (ops.get(i).equals(ans))
-                    queAns = (char)(i+65)+"";
+               for (String a:ans){
+                   if(a!=null)
+                   if(a.equals(ops.get(i)==null?"xxx":ops.get(i))){
+
+                       char val = (char)(i+65);
+                       sb.append(val);
+                       break;
+                   }
+               }
             }
+//            System.out.println("sb"+sb);
 
         }
-        return new Question(queTitle, queAns, queType, ops, explains, errTimes, del);
+        return new Question(queTitle, sb.toString(), queType, ops, explains, errTimes, del);
     }
 
     public void fillCell(XSSFRow row, CellStyle style, int styleCell, short color) {
@@ -247,7 +260,7 @@ public class ExcelUtils {
         for (int i = 0; i < rows; i++) {
             XSSFRow row = sheet.getRow(i);
             XSSFCell cell = row.getCell(record);
-            if (cell==null) {
+            if (cell==null||cell.toString().trim().equals("")) {
                 row.createCell(record);
                 row.getCell(record).setCellValue(out);
                 break;
