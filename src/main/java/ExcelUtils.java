@@ -250,6 +250,8 @@ public class ExcelUtils {
                     break;
                 }else{
                     row.getCell(errCellNum).setCellValue(0.0);
+                    if (row.getCell(record)!=null)
+                        row.getCell(record).setCellValue("");
                 }
 
             }

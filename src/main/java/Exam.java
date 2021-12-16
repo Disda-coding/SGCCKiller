@@ -108,7 +108,7 @@ public class Exam {
                 System.out.println();
                 //printExplains(que);
             } else if(ans.equals("S")){
-                System.out.println("跳过并减少错误计数器");
+                System.out.println("跳过并重置错误计数器");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -1.0, eu.styleCell);
             }
             else {
@@ -184,7 +184,8 @@ public class Exam {
             System.out.println("*********  2.测试错误题目  **********");
             System.out.println("********   3.显示题目与答案  ********");
             System.out.println("*********  4.查看历史得分  **********");
-            System.out.println("*********  5.   退出     **********");
+            System.out.println("********   5.  重置题库    *********");
+            System.out.println("*********  6.   退出     **********");
             String opt;
             opt = input.nextLine();
             if (opt==null||opt.equals("1")||opt.equals("")) {
@@ -200,6 +201,9 @@ public class Exam {
             } else if(opt.equals("4")){
                 ex.eu.showRecords();
             }
+            else if(opt.equals("5")){
+                ex.removeErrTimes();
+            }
             else {
                 System.out.println("Bye Bye!");
                 exitFlag = true;
@@ -211,6 +215,14 @@ public class Exam {
         }
 
 
+    }
+
+    private void removeErrTimes() {
+        for (int i = 1; i < questions.size(); i++) {
+            Question que = questions.get(i);
+            eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -1.0, eu.styleCell);
+        }
+        System.out.println("已重置！！！");
     }
 
 
