@@ -104,7 +104,7 @@ public class Exam {
                 System.out.println("回答正确");
                 System.out.println();
                 //printExplains(que);
-            } else if(ans.equals('S')){
+            } else if(ans.equals('s')||ans.equals('S')){
                 System.out.println("Reset the ERR times");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -1.0, eu.styleCell);
             }
@@ -184,12 +184,13 @@ public class Exam {
             System.out.println("*********  5.   退出     **********");
             String opt;
             opt = input.nextLine();
-            if (opt.equals("1")) {
+            if (opt==null||opt.equals("1")||opt.equals("")) {
                 ex.testAll();
             } else if (opt.equals("2")) {
                 System.out.println("最多错了" + ex.max_err + "次题");
                 System.out.println("选择错误次数大于等于x的题目");
                 String times = input.nextLine();
+                if(times==null||times.equals("")) times = "1";
                 ex.testError(Integer.valueOf(times));
             } else if (opt.equals("3")) {
                 ex.printAll();
