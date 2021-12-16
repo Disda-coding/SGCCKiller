@@ -21,6 +21,7 @@ enum quesType {
 }
 
 public class ExcelUtils {
+    static boolean isSelect=true;
 
     private XSSFSheet sheet;
     private XSSFWorkbook workbook;
@@ -52,7 +53,7 @@ public class ExcelUtils {
         Scanner input = new Scanner(System.in);
         boolean flag = true;
         String path = names[0];
-        while (flag && names.length > 1) {
+        while (flag && names.length > 1 && isSelect) {
             System.out.println("请选择要打开的配置文件");
             for (int i = 0; i < names.length; i++)
                 System.out.println(i + 1 + ". " + names[i]);

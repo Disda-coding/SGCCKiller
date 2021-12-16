@@ -11,8 +11,8 @@ import java.util.*;
 public class Exam {
     private ArrayList<Question> questions = new ArrayList();
     private char[] seq = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
-    // 记录题库中最大的错误数量
-    private double max_err = 0.0;
+
+
     ExcelUtils eu;
 
     public void printTotal(int times) {
@@ -175,7 +175,7 @@ public class Exam {
 
         Exam ex = new Exam();
         ex.eu = new ExcelUtils(url, 0);
-        ex.max_err = ex.eu.getTestData(ex.questions);
+
 
         boolean exitFlag = false;
         while (!exitFlag) {
@@ -191,7 +191,7 @@ public class Exam {
             if (opt==null||opt.equals("1")||opt.equals("")) {
                 ex.testAll();
             } else if (opt.equals("2")) {
-                System.out.println("最多错了" + ex.max_err + "次题");
+                System.out.println("最多错了" + ex.eu.getTestData(ex.questions) + "次题");
                 System.out.println("选择错误次数大于等于x的题目");
                 String times = input.nextLine();
                 if(times==null||times.equals("")) times = "1";

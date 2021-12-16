@@ -1,0 +1,22 @@
+attributes:
+  styleCell: 0
+  titleCell: 5
+  quesType: 4
+  ans: 6
+  optBeg: 7
+  optEnd: 12
+  explain: 13
+  errCell: 15
+  record: 16
+parameters:
+  qStart: 0 # 标题所在行
+  T: 对
+  F: 错
+  linesize: 70
+  easy: 2
+  median: 5
+  hard: 7
+  calTime: 1
+  isOrder: 0
+  delimeter:
+
