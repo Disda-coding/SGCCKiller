@@ -88,6 +88,7 @@ public class Exam {
             }
             System.out.println("请输入你的答案：（可以使用a/A/1代表第一个选项）");
             String ans = input.nextLine().toUpperCase();
+
             if (Utils.isInteger(ans)) {
                 StringBuilder tmp = new StringBuilder();
                 for (int j = 0; j < ans.length(); j++) {
@@ -95,7 +96,9 @@ public class Exam {
                 }
                 ans = tmp.toString();
                 //  System.out.println(ans);
+
             }
+
             if (que.getType().equals("是非题") || que.getType().equals("判断题")) {
                 if (ans.equals("A")) ans = eu.T;
                 else ans = eu.F;
@@ -104,8 +107,8 @@ public class Exam {
                 System.out.println("回答正确");
                 System.out.println();
                 //printExplains(que);
-            } else if(ans.equals('s')||ans.equals('S')){
-                System.out.println("Reset the ERR times");
+            } else if(ans.equals("S")){
+                System.out.println("跳过并减少错误计数器");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -1.0, eu.styleCell);
             }
             else {
