@@ -56,7 +56,7 @@ public class Exam {
         String[] nums = in.split(" |-");
         if (nums.length == 2) {
             beg = Integer.valueOf(nums[0]);
-            end = Integer.valueOf(nums[1]);
+            end = Integer.valueOf(nums[1])>size?size:Integer.valueOf(nums[1]);
 
         } else if(nums.length == 1){
             if(nums[0].equals("")) {

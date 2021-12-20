@@ -96,7 +96,7 @@ public class ExcelUtils {
     public double getRemData(ArrayList<Text> texts) {
         double max_err = 0;
         int rows = sheet.getPhysicalNumberOfRows();
-        for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows && (sheet.getRow(i).getCell(0) !=null); i++) {
             XSSFRow row = sheet.getRow(i);
             String queTitle = row.getCell(0).toString();
             String queAns = row.getCell(1).toString();
@@ -113,7 +113,7 @@ public class ExcelUtils {
     public double getTestData(ArrayList<Question> questions) {
         double max_err = 0;
         int rows = sheet.getPhysicalNumberOfRows();
-        for (int i = qStart; i < rows; i++) {
+        for (int i = qStart; i < rows&& (sheet.getRow(i).getCell(titleCell) !=null); i++) {
             XSSFRow row = sheet.getRow(i);
             String queTitle = "";
             if (row.getCell(titleCell)!=null&&!row.getCell(titleCell).toString().equals(""))
@@ -231,7 +231,8 @@ public class ExcelUtils {
          * @Date 2021/12/3 2:35 下午
          */
         int rows = sheet.getPhysicalNumberOfRows();
-        for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows&& (sheet.getRow(i).getCell(titleCell) !=null); i++) {
+
             XSSFRow row = sheet.getRow(i);
             String cell = row.getCell(caseCellNum).toString(); // 2 for que
             CellStyle style = workbook.createCellStyle();
@@ -263,7 +264,7 @@ public class ExcelUtils {
 
     public void recording(String out) {
         int rows = sheet.getPhysicalNumberOfRows();
-        for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows&&(sheet.getRow(i).getCell(titleCell) !=null); i++) {
             XSSFRow row = sheet.getRow(i);
             XSSFCell cell = row.getCell(record);
             if (cell==null||cell.toString().trim().equals("")) {
