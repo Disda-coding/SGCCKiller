@@ -159,8 +159,9 @@ public class Exam {
         Collections.sort(names);
         Scanner input = new Scanner(System.in);
         boolean flag = true;
-        String url = null;
-        while (flag) {
+        String url = URLDecoder.decode(ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath(),"utf-8");
+        System.out.println(url);
+        while (flag && names.size()>1) {
             System.out.println("请选择要打开的题库");
             for (int i = 0; i < names.size(); i++)
                 System.out.println(i + 1 + ". " + names.get(i));
@@ -188,10 +189,11 @@ public class Exam {
             System.out.println("*********  6.   退出     **********");
             String opt;
             opt = input.nextLine();
+            double max_err = ex.eu.getTestData(ex.questions);
             if (opt==null||opt.equals("1")||opt.equals("")) {
                 ex.testAll();
             } else if (opt.equals("2")) {
-                System.out.println("最多错了" + ex.eu.getTestData(ex.questions) + "次题");
+                System.out.println("最多错了 " + (int)max_err  + " 次");
                 System.out.println("选择错误次数大于等于x的题目");
                 String times = input.nextLine();
                 if(times==null||times.equals("")) times = "1";
