@@ -160,7 +160,7 @@ public class Exam {
         Scanner input = new Scanner(System.in);
         boolean flag = true;
         String url = URLDecoder.decode(ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath(),"utf-8");
-        System.out.println(url);
+
         while (flag && names.size()>1) {
             System.out.println("请选择要打开的题库");
             for (int i = 0; i < names.size(); i++)
@@ -173,7 +173,7 @@ public class Exam {
                 flag = false;
             }
         }
-
+        System.out.println(url);
         Exam ex = new Exam();
         ex.eu = new ExcelUtils(url, 0);
 

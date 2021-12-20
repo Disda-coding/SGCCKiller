@@ -234,11 +234,12 @@ public class ExcelUtils {
         for (int i = 0; i < rows; i++) {
             XSSFRow row = sheet.getRow(i);
             String cell = row.getCell(caseCellNum).toString(); // 2 for que
+            CellStyle style = workbook.createCellStyle();
             if (cell.equals(caseName)) {
                 if(opt>=0.0){
                     double errTimes = Double.valueOf(row.getCell(errCellNum).toString()) + opt; // 11 for que
                     row.getCell(errCellNum).setCellValue(errTimes);
-                    CellStyle style = workbook.createCellStyle();
+
                     if (errTimes <= easy) {
                         fillCell(row, style, styleCell, new HSSFColor.GOLD().getIndex());
                     } else if (errTimes > easy && errTimes <= median) {
@@ -251,6 +252,7 @@ public class ExcelUtils {
                     break;
                 }else{
                     row.getCell(errCellNum).setCellValue(0.0);
+                    this.fillCell(row, style, styleCell, (new HSSFColor.WHITE()).getIndex());
                     if (row.getCell(record)!=null)
                         row.getCell(record).setCellValue("");
                 }
