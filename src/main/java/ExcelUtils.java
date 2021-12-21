@@ -109,8 +109,15 @@ public class ExcelUtils {
         }
         return max_err;
     }
+    public double getMaxErrTimes(List<Question> questions){
+        double max_err = 0;
+        for (Question q : questions){
+            max_err = max_err>=q.getErrTimes()?max_err:q.getErrTimes();
+        }
+        return max_err;
+    }
 
-    public double getTestData(ArrayList<Question> questions) {
+    public void getTestData(ArrayList<Question> questions) {
         double max_err = 0;
         int rows = sheet.getPhysicalNumberOfRows();
         for (int i = qStart; i < rows&& (sheet.getRow(i).getCell(titleCell) !=null); i++) {
@@ -132,7 +139,7 @@ public class ExcelUtils {
             } else{
                 errTimes = Double.valueOf(row.getCell(errCell).toString());
             }
-            max_err = errTimes > max_err ? errTimes : max_err;
+
             String queType="";
             if (row.getCell(typeCell)!=null&&!row.getCell(typeCell).toString().equals(""))
                  queType = row.getCell(typeCell).toString();
@@ -162,7 +169,7 @@ public class ExcelUtils {
 
 
         }
-        return max_err;
+
     }
 
 //    HashMap mapping = new HashMap(){

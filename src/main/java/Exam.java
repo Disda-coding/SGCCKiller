@@ -117,6 +117,7 @@ public class Exam {
                 System.out.println();
                 err++;
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, 1.0, eu.styleCell);
+                que.increaseErrTimes();
             }
         }
         long eTime = System.currentTimeMillis();
@@ -177,7 +178,7 @@ public class Exam {
         Exam ex = new Exam();
         ex.eu = new ExcelUtils(url, 0);
 
-
+        ex.eu.getTestData(ex.questions);
         boolean exitFlag = false;
         while (!exitFlag) {
             System.out.println("************* 选择功能 *************");
@@ -189,7 +190,8 @@ public class Exam {
             System.out.println("*********  6.   退出     **********");
             String opt;
             opt = input.nextLine();
-            double max_err = ex.eu.getTestData(ex.questions);
+            double max_err=ex.eu.getMaxErrTimes(ex.questions);
+
             if (opt==null||opt.equals("1")||opt.equals("")) {
                 ex.testAll();
             } else if (opt.equals("2")) {

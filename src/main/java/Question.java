@@ -46,6 +46,9 @@ public class Question {
     public String getExplains() {
         return explains;
     }
+    public void increaseErrTimes(){
+        this.errTimes++;
+    }
 
     //要重写equals方法以及hashCode方法，才能在set集合中保证题目不重复
     @Override
@@ -60,6 +63,7 @@ public class Question {
         }
         return true;
     }
+
 
     @Override
     public int hashCode() {
