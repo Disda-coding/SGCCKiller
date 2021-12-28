@@ -2,14 +2,14 @@ attributes:
   styleCell: 0
   titleCell: 6
   quesType: 5
-  ans: 14
+  ans: 11
   optBeg: 7
-  optEnd: 13
+  optEnd: 10
   explain: 20
   errCell: 25
   record: 26
 parameters:
-  qStart: 1 # 标题所在行
+  qStart: 2 # 标题所在行
   T: A
   F: B
   linesize: 100

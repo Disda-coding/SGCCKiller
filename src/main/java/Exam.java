@@ -190,7 +190,7 @@ public class Exam {
             System.out.println("*********  6.   退出     **********");
             String opt;
             opt = input.nextLine();
-            double max_err=ex.eu.getMaxErrTimes(ex.questions);
+            double    max_err=ex.eu.getMaxErrTimes(ex.questions);
 
             if (opt==null||opt.equals("1")||opt.equals("")) {
                 ex.testAll();
