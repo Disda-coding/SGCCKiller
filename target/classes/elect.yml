@@ -12,7 +12,7 @@ parameters:
   qStart: 2 # 标题所在行
   T: A
   F: B
-  linesize: 100
+  linesize: 70
   easy: 2
   median: 5
   hard: 7

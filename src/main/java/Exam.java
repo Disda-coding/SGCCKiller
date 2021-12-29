@@ -44,7 +44,7 @@ public class Exam {
          * @Date 2021/12/3 2:32 下午
          */
         printTotal(times);
-        test(1, questions.size() - 1, times);
+        test(1, questions.size() - 1, times,true);
     }
 
     public void testAll() {
@@ -60,7 +60,7 @@ public class Exam {
 
         } else if(nums.length == 1){
             if(nums[0].equals("")) {
-                test(beg,end,0);
+                test(beg,end,0,false);
                 return;
             }
             else {
@@ -68,10 +68,10 @@ public class Exam {
 
             }
 
-        } test(beg, end, 0);
+        } test(beg, end, 0,false);
     }
 
-    public void test(int beg, int end, int times) {
+    public void test(int beg, int end, int times,boolean mode) {
         long sTime = System.currentTimeMillis();
         Scanner input = new Scanner(System.in);
         int all = 0;
@@ -106,10 +106,11 @@ public class Exam {
             if (ans.equals(que.getAnswer())) {
                 System.out.println("回答正确");
                 System.out.println();
+                if (mode) eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -0.5, eu.styleCell);
                 //printExplains(que);
             } else if(ans.equals("S")){
                 System.out.println("跳过并重置错误计数器");
-                eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -1.0, eu.styleCell);
+                eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
             }
             else {
                 System.out.println("正确答案：" + que.getAnswer());

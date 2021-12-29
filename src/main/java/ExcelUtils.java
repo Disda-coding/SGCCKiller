@@ -248,13 +248,15 @@ public class ExcelUtils {
          * @Date 2021/12/3 2:35 下午
          */
         int rows = sheet.getPhysicalNumberOfRows();
+        CellStyle style = workbook.createCellStyle();
         for (int i = 0; i < rows && (sheet.getRow(i).getCell(titleCell) != null); i++) {
 
             Row row = sheet.getRow(i);
             String cell = row.getCell(caseCellNum).toString(); // 2 for que
-            CellStyle style = workbook.createCellStyle();
+
             if (cell.equals(caseName)) {
-                if (opt >= 0.0) {
+
+                if (opt >= -1.0) {
                     double errTimes = Double.valueOf(row.getCell(errCellNum).toString()) + opt; // 11 for que
                     row.getCell(errCellNum).setCellValue(errTimes);
 
@@ -268,7 +270,7 @@ public class ExcelUtils {
                         fillCell(row, style, styleCell, new HSSFColor.RED().getIndex());
                     }
                     break;
-                } else {
+                } else if(opt == -2.0){
                     row.getCell(errCellNum).setCellValue(0.0);
                     this.fillCell(row, style, styleCell, (new HSSFColor.WHITE()).getIndex());
                     if (row.getCell(record) != null)
