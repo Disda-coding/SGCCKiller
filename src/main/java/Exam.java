@@ -44,7 +44,7 @@ public class Exam {
          * @Date 2021/12/3 2:32 下午
          */
         printTotal(times);
-        test(1, questions.size() - 1, times,true);
+        test(1, questions.size() - 1, times);
     }
 
     public void testAll() {
@@ -60,7 +60,7 @@ public class Exam {
 
         } else if(nums.length == 1){
             if(nums[0].equals("")) {
-                test(beg,end,0,false);
+                test(beg,end,0);
                 return;
             }
             else {
@@ -68,10 +68,10 @@ public class Exam {
 
             }
 
-        } test(beg, end, 0,false);
+        } test(beg, end, 0);
     }
 
-    public void test(int beg, int end, int times,boolean mode) {
+    public void test(int beg, int end, int times) {
         long sTime = System.currentTimeMillis();
         Scanner input = new Scanner(System.in);
         int all = 0;
@@ -100,13 +100,13 @@ public class Exam {
             }
 
             if (que.getType().equals("是非题") || que.getType().equals("判断题")) {
-                if (ans.equals("A")) ans = eu.T;
-                else ans = eu.F;
+                if (ans.equals("A")) ans = "T";
+                else ans = "F";
             }
             if (ans.equals(que.getAnswer())) {
                 System.out.println("回答正确");
                 System.out.println();
-                if (mode) eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -0.5, eu.styleCell);
+                eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -0.5, eu.styleCell);
                 //printExplains(que);
             } else if(ans.equals("S")){
                 System.out.println("跳过并重置错误计数器");
@@ -127,10 +127,11 @@ public class Exam {
         String out="";
         if(eu.calTime==1){
             System.out.println("做题时长约为"+(eTime-sTime)/1000/60.0+"Min");
-            out = "您一共做了: "+all+"题\t您的得分： " + res+"\t做题时长约为"+(eTime-sTime)/1000/60.0+"Min";
-            eu.recording(out);
-        }
+            out = "\t做题时长约为"+(eTime-sTime)/1000/60.0+"Min";
 
+        }
+        out="您一共做了: "+all+"题\t您的得分： " + res+out;
+        eu.recording(out);
 
 
     }

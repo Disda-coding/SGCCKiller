@@ -1,17 +1,15 @@
 attributes:
   styleCell: 0
-  titleCell: 6
-  quesType: 5
-  ans: 11
-  optBeg: 7
-  optEnd: 10
-  explain: 20
+  titleCell: 2
+  quesType: 1
+  ans: 3
+  optBeg: 4
+  optEnd: 9
+  explain: 10
   errCell: 25
   record: 26
 parameters:
-  qStart: 2 # 标题所在行
-  T: A
-  F: B
+  qStart: 0 # 标题所在行
   linesize: 70
   easy: 2
   median: 5

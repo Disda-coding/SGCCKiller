@@ -8,7 +8,7 @@ public class ExcelFilter implements FilenameFilter {
 
     @Override
     public boolean accept(File dir, String name) {
-        return name.endsWith(".xlsx") || name.endsWith(".xls");
+        return (name.endsWith(".xlsx") || name.endsWith(".xls"))&&!name.contains(".~");
     }
 
 }

@@ -26,7 +26,7 @@ public class ExcelUtils {
     private Sheet sheet;
     private Workbook workbook;
     int styleCell, titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy, median, hard, qStart, calTime, isOrder, record;
-    String T, F, del;
+    String del;
 
 
     quesType qType = quesType.OBJ;
@@ -65,16 +65,21 @@ public class ExcelUtils {
             System.out.println("请选择要打开的配置文件");
             for (int i = 0; i < names.length; i++)
                 System.out.println(i + 1 + ". " + names[i]);
+            System.out.println(0+" 自动解析");
             int select = Integer.parseInt(input.nextLine());
             if (select >= 1 && select <= names.length) {
                 path = names[select - 1];
                 flag = false;
+            }else if(select==0){
+                isSelect=false;
             }
+
         }
+        URL url = null;
+        if (path!=null)
+            url = ExcelUtils.class.getClassLoader().getResource(path);
 
-        URL url = ExcelUtils.class.getClassLoader().getResource(path);
-
-        if (url != null) {
+        if (url != null && isSelect) {
             Map<String, Object> map = yaml.load(new FileInputStream(url.getFile()));
 
             Map attr = (Map<String, Object>) map.get("attributes");
@@ -88,8 +93,6 @@ public class ExcelUtils {
             errCell = (Integer) attr.get("errCell");
             record = (Integer) attr.get("record");
             Map para = (Map<String, Object>) map.get("parameters");
-            T = (String) para.get("T");
-            F = (String) para.get("F");
             del = (String) para.get("delimeter");
             linesize = (Integer) para.get("linesize");
             easy = (Integer) para.get("easy");
@@ -98,6 +101,9 @@ public class ExcelUtils {
             qStart = (Integer) para.get("qStart");
             calTime = (Integer) para.get("calTime");
             isOrder = (Integer) para.get("isOrder");
+        }
+        else{
+            //自动解析
         }
     }
 
@@ -257,7 +263,7 @@ public class ExcelUtils {
             if (cell.equals(caseName)) {
 
                 if (opt >= -1.0) {
-                    double errTimes = Double.valueOf(row.getCell(errCellNum).toString()) + opt; // 11 for que
+                    double errTimes = Double.valueOf(row.getCell(errCellNum).toString()) + opt<0?0:Double.valueOf(row.getCell(errCellNum).toString()) + opt; // 11 for que
                     row.getCell(errCellNum).setCellValue(errTimes);
 
                     if (errTimes <= easy) {
