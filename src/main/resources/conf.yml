@@ -4,16 +4,17 @@ attributes:
   quesType: 1
   ans: 3
   optBeg: 4
-  optEnd: 9
-  explain: 10
+  optEnd: 10
+  explain: 11
   errCell: 25
   record: 26
 parameters:
   qStart: 0 # 标题所在行
-  linesize: 70
+  linesize: 50
   easy: 2
   median: 5
   hard: 7
   calTime: 1
-  isOrder: 1
+  isOrder: 0
+  ratio: 0.25
   delimeter:

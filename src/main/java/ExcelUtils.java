@@ -27,7 +27,7 @@ public class ExcelUtils {
     private Workbook workbook;
     int styleCell, titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy, median, hard, qStart, calTime, isOrder, record;
     String del;
-
+    double ratio;
 
     quesType qType = quesType.OBJ;
 
@@ -101,6 +101,7 @@ public class ExcelUtils {
             qStart = (Integer) para.get("qStart");
             calTime = (Integer) para.get("calTime");
             isOrder = (Integer) para.get("isOrder");
+            ratio = (Double) para.get("ratio");
         }
         else{
             //自动解析
@@ -176,7 +177,8 @@ public class ExcelUtils {
             if (qType == quesType.OBJ && (queType.equals("问答题") || queType.equals("填空题")))
                 continue;
             else {
-                if (isOrder == 1) {
+
+                if (isOrder == 1|| queType.equals("判断题")) {
                     questions.add(new Question(queTitle, queAns, queType, ops, explains, errTimes, del));
                 } else {
                     questions.add(mixOrder(queTitle, queAns, queType, ops, explains, errTimes, del));

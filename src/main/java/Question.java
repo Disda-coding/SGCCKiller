@@ -19,7 +19,7 @@ public class Question {
         if (this.type.equals("多选题") && del != null)
             this.answer = answer.replaceAll(del, "");
         else if(this.type.contains("是非")||this.type.contains("判断")||this.type.contains("对错")){
-            if(answer.contains("对")||answer.contains("T")||answer.contains("t")||answer.contains("A")||answer.contains("a")||answer.contains("1"))
+            if(answer.contains("对")||answer.contains("T")||answer.contains("t")||answer.contains("A")||answer.contains("a")||answer.contains("1")||answer.contains("正确"))
                 this.answer="T";
             else
                 this.answer="F";

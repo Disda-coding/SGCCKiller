@@ -10,12 +10,12 @@ import java.util.*;
 
 public class Exam {
     private ArrayList<Question> questions = new ArrayList();
-    private char[] seq = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
+    private char[] seq = {'A', 'B', 'C', 'D', 'E', 'F', 'G','H','I','J'};
 
 
     ExcelUtils eu;
 
-    public void printTotal(int times) {
+    public void printTotal(Double times) {
         /**
          * @Method printTotal
          * @Author disda
@@ -34,7 +34,7 @@ public class Exam {
         System.out.println("错误大于等于" + times + "的题目一共有" + total + "道");
     }
 
-    public void testError(int times) {
+    public void testError(Double times) {
         /**
          * @Method testError
          * @Author disda
@@ -60,7 +60,7 @@ public class Exam {
 
         } else if(nums.length == 1){
             if(nums[0].equals("")) {
-                test(beg,end,0);
+                test(beg,end,0.0);
                 return;
             }
             else {
@@ -68,10 +68,10 @@ public class Exam {
 
             }
 
-        } test(beg, end, 0);
+        } test(beg, end, 0.0);
     }
 
-    public void test(int beg, int end, int times) {
+    public void test(int beg, int end, Double times) {
         long sTime = System.currentTimeMillis();
         Scanner input = new Scanner(System.in);
         int all = 0;
@@ -106,7 +106,7 @@ public class Exam {
             if (ans.equals(que.getAnswer())) {
                 System.out.println("回答正确");
                 System.out.println();
-                eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -0.5, eu.styleCell);
+                eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -eu.ratio, eu.styleCell);
                 //printExplains(que);
             } else if(ans.equals("S")){
                 System.out.println("跳过并重置错误计数器");
@@ -159,66 +159,77 @@ public class Exam {
         File dir = new File(ExcelUtils.class.getClassLoader().getResource(".").getPath());
         String[] name = dir.list(new ExcelFilter());
         List<String> names =  Arrays.asList(name);
+        System.out.println(names);
         Collections.sort(names);
         Scanner input = new Scanner(System.in);
         boolean flag = true;
         String url = URLDecoder.decode(ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath(),"utf-8");
-
-        while (flag && names.size()>1) {
-            System.out.println("请选择要打开的题库");
-            for (int i = 0; i < names.size(); i++)
-                System.out.println(i + 1 + ". " + names.get(i));
-            int select = Integer.parseInt(input.nextLine());
-            if (select >= 1 && select <= names.size()) {
-                url = ExcelUtils.class.getClassLoader().getResource(names.get(select-1)).getPath();
-                //解决中文乱码问题
-                url = URLDecoder.decode(url, "utf-8");
-                flag = false;
+        while(flag){
+            boolean exitFlag = false;
+            Exam ex = new Exam();
+            if (names.size()>1) {
+                System.out.println("请选择要打开的题库");
+                System.out.println("0. 退出题库！");
+                for (int i = 0; i < names.size(); i++)
+                    System.out.println(i + 1 + ". " + names.get(i));
+                int select = Integer.parseInt(input.nextLine());
+                if (select >= 1 && select <= names.size()) {
+                    url = ExcelUtils.class.getClassLoader().getResource(names.get(select-1)).getPath();
+                    //解决中文乱码问题
+                    url = URLDecoder.decode(url, "utf-8");
+                    ex.eu = new ExcelUtils(url, 0);
+                    System.out.println(url);
+                    ex.eu.getTestData(ex.questions);
+                }
+                else{
+                    flag=false;
+                    exitFlag=true;
+                }
             }
+
+
+
+
+            while (!exitFlag) {
+                System.out.println("************* 选择功能 *************");
+                System.out.println("*********  1.测试全部题目  **********");
+                System.out.println("*********  2.测试错误题目  **********");
+                System.out.println("********   3.显示题目与答案  ********");
+                System.out.println("*********  4.查看历史得分  **********");
+                System.out.println("********   5.  重置题库    *********");
+                System.out.println("*********  6.   退出     **********");
+                String opt;
+                opt = input.nextLine();
+                double    max_err=ex.eu.getMaxErrTimes(ex.questions);
+
+                if (opt==null||opt.equals("1")||opt.equals("")) {
+                    ex.testAll();
+                } else if (opt.equals("2")) {
+                    System.out.println("最多错了 " + (int)max_err  + " 次");
+                    System.out.println("选择错误次数大于等于x的题目");
+                    String times = input.nextLine();
+                    if(times==null||times.equals("")) times = "1";
+                    ex.testError(Double.valueOf(times));
+                } else if (opt.equals("3")) {
+                    ex.printAll();
+                } else if(opt.equals("4")){
+                    ex.eu.showRecords();
+                }
+                else if(opt.equals("5")){
+                    ex.removeErrTimes();
+                }
+                else {
+                    System.out.println("Bye Bye!");
+                    exitFlag = true;
+                }
+                //ex.printAns();
+
+                FileOutputStream fos = new FileOutputStream(url);
+                ex.eu.writeExcel(fos);
+            }
+
         }
-        System.out.println(url);
-        Exam ex = new Exam();
-        ex.eu = new ExcelUtils(url, 0);
 
-        ex.eu.getTestData(ex.questions);
-        boolean exitFlag = false;
-        while (!exitFlag) {
-            System.out.println("************* 选择功能 *************");
-            System.out.println("*********  1.测试全部题目  **********");
-            System.out.println("*********  2.测试错误题目  **********");
-            System.out.println("********   3.显示题目与答案  ********");
-            System.out.println("*********  4.查看历史得分  **********");
-            System.out.println("********   5.  重置题库    *********");
-            System.out.println("*********  6.   退出     **********");
-            String opt;
-            opt = input.nextLine();
-            double    max_err=ex.eu.getMaxErrTimes(ex.questions);
-
-            if (opt==null||opt.equals("1")||opt.equals("")) {
-                ex.testAll();
-            } else if (opt.equals("2")) {
-                System.out.println("最多错了 " + (int)max_err  + " 次");
-                System.out.println("选择错误次数大于等于x的题目");
-                String times = input.nextLine();
-                if(times==null||times.equals("")) times = "1";
-                ex.testError(Integer.valueOf(times));
-            } else if (opt.equals("3")) {
-                ex.printAll();
-            } else if(opt.equals("4")){
-                ex.eu.showRecords();
-            }
-            else if(opt.equals("5")){
-                ex.removeErrTimes();
-            }
-            else {
-                System.out.println("Bye Bye!");
-                exitFlag = true;
-            }
-            //ex.printAns();
-
-            FileOutputStream fos = new FileOutputStream(url);
-            ex.eu.writeExcel(fos);
-        }
 
 
     }
