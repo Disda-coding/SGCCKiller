@@ -185,6 +185,13 @@ public class Exam {
                     flag=false;
                     exitFlag=true;
                 }
+            }else{
+                url = ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath();
+                //解决中文乱码问题
+                url = URLDecoder.decode(url, "utf-8");
+                ex.eu = new ExcelUtils(url, 0);
+                System.out.println(url);
+                ex.eu.getTestData(ex.questions);
             }
 
 
@@ -200,7 +207,7 @@ public class Exam {
                 System.out.println("*********  6.   退出     **********");
                 String opt;
                 opt = input.nextLine();
-                double    max_err=ex.eu.getMaxErrTimes(ex.questions);
+                double  max_err=ex.eu.getMaxErrTimes(ex.questions);
 
                 if (opt==null||opt.equals("1")||opt.equals("")) {
                     ex.testAll();

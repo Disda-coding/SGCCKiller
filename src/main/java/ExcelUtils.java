@@ -40,15 +40,16 @@ public class ExcelUtils {
         try {
             fileInputStream = new FileInputStream(filePath);
 
-
-            try {
+            if (filePath.endsWith("xls")) {
                 workbook = new HSSFWorkbook(fileInputStream);
-                sheet = (HSSFSheet) workbook.getSheetAt(0);
-            } catch (Exception e) {
+
+            }
+
+            else if (filePath.endsWith("xlsx")) {
                 workbook = new XSSFWorkbook(fileInputStream);
-                sheet = (XSSFSheet) workbook.getSheetAt(0);
             }
             //获取sheet
+            sheet = workbook.getSheetAt(0);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,11 +134,12 @@ public class ExcelUtils {
         return max_err;
     }
 
+
     public void getTestData(ArrayList<Question> questions) {
         double max_err = 0;
         int rows = sheet.getPhysicalNumberOfRows();
 
-        for (int i = qStart; i < rows && (sheet.getRow(i).getCell(titleCell) != null&& !sheet.getRow(i).getCell(titleCell).toString().trim().equals("")); i++) {
+        for (int i = qStart; i < rows && (sheet.getRow(i)!=null&&sheet.getRow(i).getCell(titleCell) != null&& !sheet.getRow(i).getCell(titleCell).toString().trim().equals("")); i++) {
             Row row = sheet.getRow(i);
             String queTitle = "";
             if (row.getCell(titleCell) != null && !row.getCell(titleCell).toString().equals(""))
