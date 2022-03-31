@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Question {
 
@@ -16,8 +17,12 @@ public class Question {
     public Question(String title, String answer, String type, ArrayList<String> ops, String explains, double errTimes, String del) {
         this.title = title;
         this.type = type;
-        if (this.type.equals("多选题") && del != null)
-            this.answer = answer.replaceAll(del, "");
+        if (this.type.equals("多选题")) {
+            String ans = answer;
+            if(del != null)
+                ans = answer.replaceAll(del, "");
+            this.answer = sortOps(ans);
+        }
         else if(this.type.contains("是非")||this.type.contains("判断")||this.type.contains("对错")){
             if(answer.contains("对")||answer.contains("T")||answer.contains("t")||answer.contains("A")||answer.contains("a")||answer.contains("1")||answer.contains("正确"))
                 this.answer="T";
@@ -29,6 +34,13 @@ public class Question {
         this.explains = explains;
         this.ops = ops;
         this.errTimes = errTimes;
+    }
+
+    private String sortOps(String ans) {
+        char[] ch = ans.toCharArray();
+        Arrays.sort(ch);
+
+        return new String(ch);
     }
 
     public String getTitle() {

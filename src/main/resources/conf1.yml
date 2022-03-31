@@ -9,12 +9,12 @@ attributes:
   errCell: 25
   record: 26
 parameters:
-  qStart: 1 # 标题所在行
+  qStart: 0 # 标题所在行
   linesize: 50
   easy: 2
   median: 5
   hard: 7
   calTime: 1
-  isOrder: 0
-  ratio: 0.25
+  isOrder: 1
+  ratio: 0.25 # 错题转换成正确题目的比例 0.5代表需要2次才能转为正确的题
   delimeter:
