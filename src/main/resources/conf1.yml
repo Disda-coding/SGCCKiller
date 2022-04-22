@@ -15,6 +15,6 @@ parameters:
   median: 5
   hard: 7
   calTime: 1
-  isOrder: 1
+  isOrder: 0
   ratio: 0.25 # 错题转换成正确题目的比例 0.5代表需要2次才能转为正确的题
   delimeter:
