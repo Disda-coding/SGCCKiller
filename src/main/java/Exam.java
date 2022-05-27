@@ -215,7 +215,7 @@ public class Exam {
                     System.out.println("最多错了 " + (int)max_err  + " 次");
                     System.out.println("选择错误次数大于等于x的题目");
                     String times = input.nextLine();
-                    if(times==null||times.equals("")) times = "1";
+                    if(times==null||times.equals("")) times = "0.0001";
                     ex.testError(Double.valueOf(times));
                 } else if (opt.equals("3")) {
                     ex.printAll();
