@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>Rem</artifactId>
+    <artifactId>QnA</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
         <resources>
@@ -23,6 +23,20 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.jobsche.plugin.RemoteCheckApp</mainClass> <!-- 此处为主入口-->
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
             <!-- 资源文件拷贝插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

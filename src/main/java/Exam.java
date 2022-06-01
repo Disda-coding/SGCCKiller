@@ -2,11 +2,10 @@
 import utils.ExcelFilter;
 import utils.Utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Exam {
     private ArrayList<Question> questions = new ArrayList();
@@ -156,14 +155,37 @@ public class Exam {
     }
 
     public static void main(String[] args) throws IOException {
-        File dir = new File(ExcelUtils.class.getClassLoader().getResource(".").getPath());
+        String path = null;
+        try {
+            System.out.println("path: "+ExcelUtils.class.getClassLoader().getResource(".").getPath());
+            path = ExcelUtils.class.getClassLoader().getResource(".").getPath();
+//            dir = new File(ExcelUtils.class.getClassLoader().getResource(".").getPath());
+        }catch (NullPointerException e){
+            System.out.println("可能在jar包环境");
+
+            StringJoiner targetPath = new StringJoiner("/");
+            try{
+                String jar_path = Exam.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                String[] pathArray= jar_path.split("/");
+                for (int i = 0; i < pathArray.length-1; i++) {
+                    targetPath = targetPath.add(pathArray[i]);
+                }
+//                dir = new File(targetPath.toString());
+                path = targetPath.toString();
+            }catch (Exception ex){
+                System.out.println("fail due to jar");
+            }
+        }
+
+//        System.out.println(ExcelUtils.class.getClass().getResource("."));
+        File dir = new File(path);
         String[] name = dir.list(new ExcelFilter());
         List<String> names =  Arrays.asList(name);
         System.out.println(names);
         Collections.sort(names);
         Scanner input = new Scanner(System.in);
         boolean flag = true;
-        String url = URLDecoder.decode(ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath(),"utf-8");
+        String url = URLDecoder.decode(path+"/"+name[0],"utf-8");
         while(flag){
             boolean exitFlag = false;
             Exam ex = new Exam();
@@ -174,11 +196,13 @@ public class Exam {
                     System.out.println(i + 1 + ". " + names.get(i));
                 int select = Integer.parseInt(input.nextLine());
                 if (select >= 1 && select <= names.size()) {
-                    url = ExcelUtils.class.getClassLoader().getResource(names.get(select-1)).getPath();
+//                    url = ExcelUtils.class.getClassLoader().getResource(names.get(select-1)).getPath();
+
+
                     //解决中文乱码问题
-                    url = URLDecoder.decode(url, "utf-8");
+                    url = URLDecoder.decode(path+"/"+names.get(select-1), "utf-8");
+
                     ex.eu = new ExcelUtils(url, 0);
-                    System.out.println(url);
                     ex.eu.getTestData(ex.questions);
                 }
                 else{
@@ -186,9 +210,9 @@ public class Exam {
                     exitFlag=true;
                 }
             }else{
-                url = ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath();
+//                url = ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath();
                 //解决中文乱码问题
-                url = URLDecoder.decode(url, "utf-8");
+                url = URLDecoder.decode(path+"/"+names.get(0), "utf-8");
                 ex.eu = new ExcelUtils(url, 0);
                 System.out.println(url);
                 ex.eu.getTestData(ex.questions);

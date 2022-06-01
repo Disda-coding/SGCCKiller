@@ -15,6 +15,6 @@ parameters:
   median: 5 # 错误 easy< <=median
   hard: 7 # 错误>=hard
   calTime: 1 # 是否计时
-  isOrder: 1 # 是否乱序
+  isOrder: 0 # 选项是否按顺序
   ratio: 0.25 # 错题转换成正确题目的比例 0.5代表需要2次才能转为正确的题
   delimeter:  # 多选题分隔符设置

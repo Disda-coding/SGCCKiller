@@ -36,6 +36,7 @@ public class ExcelUtils {
     }
 
     public ExcelUtils(String filePath, Integer index) throws FileNotFoundException, UnsupportedEncodingException {
+        System.out.println("选项为: "+filePath);
         FileInputStream fileInputStream = null;
         try {
             fileInputStream = new FileInputStream(filePath);
@@ -55,9 +56,22 @@ public class ExcelUtils {
             e.printStackTrace();
         }
         Yaml yaml = new Yaml();
+        String propPath = null;
+        StringJoiner targetPath = new StringJoiner("/");
+        try{
+            propPath = ExcelUtils.class.getClassLoader().getResource(".").getPath();
+        }catch (NullPointerException e){
+            System.out.println("jar包环境");
+            String jar_path = Exam.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            String[] pathArray= jar_path.split("/");
+            for (int i = 0; i < pathArray.length-1; i++) {
+                targetPath = targetPath.add(pathArray[i]);
+            }
+            propPath = targetPath.toString();
+//            System.out.println('p'+propPath);
+        }
 
-
-        File dir = new File(ExcelUtils.class.getClassLoader().getResource(".").getPath());
+        File dir = new File(propPath);
         String[] names = dir.list(new ConfigFilter());
         Scanner input = new Scanner(System.in);
         boolean flag = true;
@@ -76,12 +90,12 @@ public class ExcelUtils {
             }
 
         }
-        URL url = null;
+        String url = null;
         if (path!=null)
-            url = ExcelUtils.class.getClassLoader().getResource(path);
+            url = propPath+'/'+path;
 
         if (url != null && isSelect) {
-            Map<String, Object> map = yaml.load(new FileInputStream(url.getFile()));
+            Map<String, Object> map = yaml.load(new FileInputStream(url));
 
             Map attr = (Map<String, Object>) map.get("attributes");
             styleCell = (Integer) attr.get("styleCell");
