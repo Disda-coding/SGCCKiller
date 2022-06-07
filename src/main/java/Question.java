@@ -24,7 +24,7 @@ public class Question {
             this.answer = sortOps(ans);
         }
         else if(this.type.contains("是非")||this.type.contains("判断")||this.type.contains("对错")){
-            if(answer.contains("对")||answer.contains("T")||answer.contains("t")||answer.contains("A")||answer.contains("a")||answer.contains("1")||answer.contains("正确"))
+            if(answer.contains("√")||answer.contains("对")||answer.contains("T")||answer.contains("t")||answer.contains("A")||answer.contains("a")||answer.contains("1")||answer.contains("正确"))
                 this.answer="T";
             else
                 this.answer="F";

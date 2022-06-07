@@ -1,15 +1,15 @@
 attributes:
   styleCell: 0 # 用于标记excel的颜色的列
-  titleCell: 0 # 标题列
+  titleCell: 2 # 标题列
   quesType: 1 # 题目类型列
-  ans: 8 # 答案所在列
-  optBeg: 2 # 选项开始的列
-  optEnd: 7 # 选项结束的列
-  explain: 8 # 答案解释的列
+  ans: 3 # 答案所在列
+  optBeg: 4 # 选项开始的列
+  optEnd: 9 # 选项结束的列
+  explain: 11 # 答案解释的列
   errCell: 17 # 错误计数器的列
   record: 26 # 记录答题日志的列
 parameters:
-  qStart: 3 # 标题所在行
+  qStart: 1 # 标题所在行
   linesize: 50 # 一行显示是字符数量
   easy: 2 # 错误easy=<
   median: 5 # 错误 easy< <=median
