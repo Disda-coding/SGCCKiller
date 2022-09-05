@@ -1,5 +1,5 @@
 # SGCCKiller
-基于Excel的做题器
+基于Excel的做题器，追求速度，代码质量不高，后期改为brower-server。
 ## Version 1.0
 - 基于CML的操作界面
 - 可以选择做题范围（单数字代表某题，回车默认全部）
