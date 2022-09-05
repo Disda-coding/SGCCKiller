@@ -25,7 +25,7 @@ public class ExcelUtils {
 
     private Sheet sheet;
     private Workbook workbook;
-    int styleCell, titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy, median, hard, qStart, calTime, isOrder, record;
+    int styleCell, enable_explain,titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy, median, hard, qStart, calTime, isOrder, record;
     String del;
     double ratio;
 
@@ -117,6 +117,7 @@ public class ExcelUtils {
             calTime = (Integer) para.get("calTime");
             isOrder = (Integer) para.get("isOrder");
             ratio = (Double) para.get("ratio");
+            enable_explain = (Integer) para.get("enable_explain");
         }
         else{
             //自动解析
@@ -153,7 +154,7 @@ public class ExcelUtils {
         double max_err = 0;
         int rows = sheet.getPhysicalNumberOfRows();
 
-        for (int i = qStart; i < rows && (sheet.getRow(i)!=null&&sheet.getRow(i).getCell(titleCell) != null&& !sheet.getRow(i).getCell(titleCell).toString().trim().equals("")); i++) {
+        for (int i = qStart; i <= rows && (sheet.getRow(i)!=null&&sheet.getRow(i).getCell(titleCell) != null&& !sheet.getRow(i).getCell(titleCell).toString().trim().equals("")); i++) {
             Row row = sheet.getRow(i);
             String queTitle = "";
             if (row.getCell(titleCell) != null && !row.getCell(titleCell).toString().equals(""))
@@ -164,7 +165,7 @@ public class ExcelUtils {
                 queAns = Utils.trim(row.getCell(ans).toString());
             String explains = "";
             if (row.getCell(explain) != null && !row.getCell(explain).toString().equals(""))
-                row.getCell(explain).toString();
+                explains = row.getCell(explain).toString();
             // new!!
             double errTimes = 0.0;
             if (row.getCell(errCell) == null || row.getCell(errCell).toString().equals("")) {

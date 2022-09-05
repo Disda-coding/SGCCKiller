@@ -47,7 +47,7 @@ public class Exam {
     }
 
     public void testAll() {
-        int size = questions.size() - 1;
+        int size = questions.size();
         int beg = 1, end = size;
         Scanner input = new Scanner(System.in);
         System.out.println("请输入题号范围，必须小于等于" + size + " 并用空格or-相连，回车默认全部！");
@@ -76,7 +76,7 @@ public class Exam {
         int all = 0;
         int err = 0;
         for (int i = beg; i <= end; i++) {
-            Question que = questions.get(i);
+            Question que = questions.get(i-1);
             if (que.getErrTimes() < times) continue;
             all++;
             System.out.print(i + ".[" + que.getType() + "]");
@@ -106,14 +106,18 @@ public class Exam {
                 System.out.println("回答正确");
                 System.out.println();
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -eu.ratio, eu.styleCell);
-                //printExplains(que);
+                if(eu.enable_explain == -1) {
+                    printExplains(que);
+                }
             } else if(ans.equals("S")){
                 System.out.println("跳过并重置错误计数器");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
             }
             else {
                 System.out.println("正确答案：" + que.getAnswer());
-                printExplains(que);
+                if(eu.enable_explain == 1 || eu.enable_explain == -1) {
+                    printExplains(que);
+                }
                 System.out.println();
                 err++;
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, 1.0, eu.styleCell);
