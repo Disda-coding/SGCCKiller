@@ -15,7 +15,7 @@ public class Question {
 
 
     public Question(String title, String answer, String type, ArrayList<String> ops, String explains, double errTimes, String del) {
-        this.title = title;
+        this.title = title.trim();
         this.type = type;
         if (this.type.equals("多选题")) {
             String ans = answer;
