@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class Exam {
     private ArrayList<Question> questions = new ArrayList();
-    private char[] seq = {'A', 'B', 'C', 'D', 'E', 'F', 'G','H','I','J'};
+    private char[] seq = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
 
     ExcelUtils eu;
@@ -54,20 +54,20 @@ public class Exam {
         String in = input.nextLine();
         String[] nums = in.split(" |-");
         if (nums.length == 2) {
-            beg = Integer.valueOf(nums[0]);
-            end = Integer.valueOf(nums[1])>size?size:Integer.valueOf(nums[1]);
+            beg = Integer.valueOf(nums[0]) <=0 ? 1:Integer.valueOf(nums[0]);
+            end = Integer.valueOf(nums[1]) > size ? size : Integer.valueOf(nums[1]);
 
-        } else if(nums.length == 1){
-            if(nums[0].equals("")) {
-                test(beg,end,0.0);
+        } else if (nums.length == 1) {
+            if (nums[0].equals("")) {
+                test(beg, end, 0.0);
                 return;
-            }
-            else {
+            } else {
                 beg = end = Integer.valueOf(nums[0]);
 
             }
 
-        } test(beg, end, 0.0);
+        }
+        test(beg, end, 0.0);
     }
 
     public void test(int beg, int end, Double times) {
@@ -76,7 +76,7 @@ public class Exam {
         int all = 0;
         int err = 0;
         for (int i = beg; i <= end; i++) {
-            Question que = questions.get(i-1);
+            Question que = questions.get(i - 1);
             if (que.getErrTimes() < times) continue;
             all++;
             System.out.print(i + ".[" + que.getType() + "]");
@@ -106,16 +106,15 @@ public class Exam {
                 System.out.println("回答正确");
                 System.out.println();
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -eu.ratio, eu.styleCell);
-                if(eu.enable_explain == -1) {
+                if (eu.enable_explain == -1) {
                     printExplains(que);
                 }
-            } else if(ans.equals("S")){
+            } else if (ans.equals("S")) {
                 System.out.println("跳过并重置错误计数器");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
-            }
-            else {
+            } else {
                 System.out.println("正确答案：" + que.getAnswer());
-                if(eu.enable_explain == 1 || eu.enable_explain == -1) {
+                if (eu.enable_explain == 1 || eu.enable_explain == -1) {
                     printExplains(que);
                 }
                 System.out.println();
@@ -127,13 +126,13 @@ public class Exam {
         long eTime = System.currentTimeMillis();
         double res = (all - err + 0.0) / (all + 0.0) * 100;
         System.out.println("\n您的得分： " + res);
-        String out="";
-        if(eu.calTime==1){
-            System.out.println("做题时长约为"+(eTime-sTime)/1000/60.0+"Min");
-            out = "\t做题时长约为"+(eTime-sTime)/1000/60.0+"Min";
+        String out = "";
+        if (eu.calTime == 1) {
+            System.out.println("做题时长约为" + (eTime - sTime) / 1000 / 60.0 + "Min");
+            out = "\t做题时长约为" + (eTime - sTime) / 1000 / 60.0 + "Min";
 
         }
-        out="您一共做了: "+all+"题\t您的得分： " + res+out;
+        out = "您一共做了: " + all + "题\t您的得分： " + res + out;
         eu.recording(out);
 
 
@@ -161,22 +160,25 @@ public class Exam {
     public static void main(String[] args) throws IOException {
         String path = null;
         try {
-            System.out.println("path: "+ExcelUtils.class.getClassLoader().getResource(".").getPath());
-            path = ExcelUtils.class.getClassLoader().getResource(".").getPath();
+            path = "src/main/resources/";
+            //            path = ExcelUtils.class.getClassLoader().getResource(".").getPath();
+            System.out.println("path: " + path);
+
+
 //            dir = new File(ExcelUtils.class.getClassLoader().getResource(".").getPath());
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("可能在jar包环境");
 
             StringJoiner targetPath = new StringJoiner("/");
-            try{
+            try {
                 String jar_path = Exam.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                String[] pathArray= jar_path.split("/");
-                for (int i = 0; i < pathArray.length-1; i++) {
+                String[] pathArray = jar_path.split("/");
+                for (int i = 0; i < pathArray.length - 1; i++) {
                     targetPath = targetPath.add(pathArray[i]);
                 }
 //                dir = new File(targetPath.toString());
                 path = targetPath.toString();
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 System.out.println("fail due to jar");
             }
         }
@@ -184,16 +186,16 @@ public class Exam {
 //        System.out.println(ExcelUtils.class.getClass().getResource("."));
         File dir = new File(path);
         String[] name = dir.list(new ExcelFilter());
-        List<String> names =  Arrays.asList(name);
+        List<String> names = Arrays.asList(name);
         System.out.println(names);
         Collections.sort(names);
         Scanner input = new Scanner(System.in);
         boolean flag = true;
-        String url = URLDecoder.decode(path+"/"+name[0],"utf-8");
-        while(flag){
+        String url = URLDecoder.decode(path + "/" + name[0], "utf-8");
+        while (flag) {
             boolean exitFlag = false;
             Exam ex = new Exam();
-            if (names.size()>1) {
+            if (names.size() > 1) {
                 System.out.println("请选择要打开的题库");
                 System.out.println("0. 退出题库！");
                 for (int i = 0; i < names.size(); i++)
@@ -204,25 +206,22 @@ public class Exam {
 
 
                     //解决中文乱码问题
-                    url = URLDecoder.decode(path+"/"+names.get(select-1), "utf-8");
+                    url = URLDecoder.decode(path + "/" + names.get(select - 1), "utf-8");
 
                     ex.eu = new ExcelUtils(url, 0);
                     ex.eu.getTestData(ex.questions);
+                } else {
+                    flag = false;
+                    exitFlag = true;
                 }
-                else{
-                    flag=false;
-                    exitFlag=true;
-                }
-            }else{
+            } else {
 //                url = ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath();
                 //解决中文乱码问题
-                url = URLDecoder.decode(path+"/"+names.get(0), "utf-8");
+                url = URLDecoder.decode(path + "/" + names.get(0), "utf-8");
                 ex.eu = new ExcelUtils(url, 0);
                 System.out.println(url);
                 ex.eu.getTestData(ex.questions);
             }
-
-
 
 
             while (!exitFlag) {
@@ -235,25 +234,23 @@ public class Exam {
                 System.out.println("*********  6.   退出     **********");
                 String opt;
                 opt = input.nextLine();
-                double  max_err=ex.eu.getMaxErrTimes(ex.questions);
+                double max_err = ex.eu.getMaxErrTimes(ex.questions);
 
-                if (opt==null||opt.equals("1")||opt.equals("")) {
+                if (opt == null || opt.equals("1") || opt.equals("")) {
                     ex.testAll();
                 } else if (opt.equals("2")) {
-                    System.out.println("最多错了 " + (int)max_err  + " 次");
+                    System.out.println("最多错了 " + (int) max_err + " 次");
                     System.out.println("选择错误次数大于等于x的题目");
                     String times = input.nextLine();
-                    if(times==null||times.equals("")) times = "0.0001";
+                    if (times == null || times.equals("")) times = "0.0001";
                     ex.testError(Double.valueOf(times));
                 } else if (opt.equals("3")) {
                     ex.printAll();
-                } else if(opt.equals("4")){
+                } else if (opt.equals("4")) {
                     ex.eu.showRecords();
-                }
-                else if(opt.equals("5")){
+                } else if (opt.equals("5")) {
                     ex.removeErrTimes();
-                }
-                else {
+                } else {
                     System.out.println("Bye Bye!");
                     exitFlag = true;
                 }
@@ -264,7 +261,6 @@ public class Exam {
             }
 
         }
-
 
 
     }

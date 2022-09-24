@@ -20,6 +20,7 @@ enum quesType {
     OBJnSUB
 }
 
+
 public class ExcelUtils {
     static boolean isSelect = true;
 
@@ -59,7 +60,8 @@ public class ExcelUtils {
         String propPath = null;
         StringJoiner targetPath = new StringJoiner("/");
         try{
-            propPath = ExcelUtils.class.getClassLoader().getResource(".").getPath();
+//             propPath = "src/main/resources/";
+            propPath = ExcelUtils.class.getClassLoader().getResource(".").getPath(); //读取target下面的excel
         }catch (NullPointerException e){
             System.out.println("jar包环境");
             String jar_path = Exam.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -72,6 +74,7 @@ public class ExcelUtils {
         }
 
         File dir = new File(propPath);
+
         String[] names = dir.list(new ConfigFilter());
         Scanner input = new Scanner(System.in);
         boolean flag = true;
@@ -273,6 +276,7 @@ public class ExcelUtils {
          * @Exception
          * @Date 2021/12/3 2:35 下午
          */
+
         int rows = sheet.getPhysicalNumberOfRows();
         CellStyle style = workbook.createCellStyle();
         for (int i = 0; i < rows && (sheet.getRow(i).getCell(titleCell) != null); i++) {
@@ -280,9 +284,10 @@ public class ExcelUtils {
             Row row = sheet.getRow(i);
             String cell = row.getCell(caseCellNum).toString(); // 2 for que
 
-            if (cell.equals(caseName)) {
+            if (cell.trim().equals(caseName)) {
 
                 if (opt >= -1.0) {
+                    System.out.println("recorded");
                     double errTimes = Double.valueOf(row.getCell(errCellNum).toString()) + opt<0?0:Double.valueOf(row.getCell(errCellNum).toString()) + opt; // 11 for que
                     row.getCell(errCellNum).setCellValue(errTimes);
 
