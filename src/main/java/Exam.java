@@ -3,6 +3,7 @@ import utils.ExcelFilter;
 import utils.Utils;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -85,7 +86,7 @@ public class Exam {
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
                 System.out.println(seq[j] + ": " + que.ops.get(j));
             }
-            System.out.println("请输入你的答案：（可以使用a/A/1代表第一个选项）");
+            System.out.println("请输入你的答案：（可以使用a/A/1代表第一个选项,s可以跳过并重置错误次数）");
             String ans = input.nextLine().toUpperCase();
 
             if (Utils.isInteger(ans)) {
@@ -109,7 +110,7 @@ public class Exam {
                 if (eu.enable_explain == -1) {
                     printExplains(que);
                 }
-            } else if (ans.equals("S")) {
+            } else if (ans.equals("S")||ans.equals("s")) {
                 System.out.println("跳过并重置错误计数器");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
             } else {
@@ -157,13 +158,13 @@ public class Exam {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         String path = null;
         try {
-            path = "src/main/resources/";
-            //            path = ExcelUtils.class.getClassLoader().getResource(".").getPath();
-            System.out.println("path: " + path);
 
+            path = ExcelUtils.class.getClassLoader().getResource(".").getPath();
+            System.out.println("path: " + path);
+            path = "src/main/resources/";
 
 //            dir = new File(ExcelUtils.class.getClassLoader().getResource(".").getPath());
         } catch (NullPointerException e) {
@@ -171,19 +172,21 @@ public class Exam {
 
             StringJoiner targetPath = new StringJoiner("/");
             try {
-                String jar_path = Exam.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                String jar_path = Exam.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
                 String[] pathArray = jar_path.split("/");
                 for (int i = 0; i < pathArray.length - 1; i++) {
                     targetPath = targetPath.add(pathArray[i]);
                 }
 //                dir = new File(targetPath.toString());
                 path = targetPath.toString();
+//                System.out.println();
             } catch (Exception ex) {
                 System.out.println("fail due to jar");
             }
         }
 
 //        System.out.println(ExcelUtils.class.getClass().getResource("."));
+        System.out.println("Path!!"+path);
         File dir = new File(path);
         String[] name = dir.list(new ExcelFilter());
         List<String> names = Arrays.asList(name);

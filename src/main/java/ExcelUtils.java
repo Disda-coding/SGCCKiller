@@ -11,6 +11,7 @@ import utils.ConfigFilter;
 import utils.Utils;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class ExcelUtils {
         workbook.write(fos);
     }
 
-    public ExcelUtils(String filePath, Integer index) throws FileNotFoundException, UnsupportedEncodingException {
+    public ExcelUtils(String filePath, Integer index) throws FileNotFoundException, UnsupportedEncodingException, URISyntaxException {
         System.out.println("选项为: "+filePath);
         FileInputStream fileInputStream = null;
         try {
@@ -61,10 +62,11 @@ public class ExcelUtils {
         StringJoiner targetPath = new StringJoiner("/");
         try{
 //             propPath = "src/main/resources/";
+//            System.out.println(111);
             propPath = ExcelUtils.class.getClassLoader().getResource(".").getPath(); //读取target下面的excel
         }catch (NullPointerException e){
             System.out.println("jar包环境");
-            String jar_path = Exam.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            String jar_path = Exam.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
             String[] pathArray= jar_path.split("/");
             for (int i = 0; i < pathArray.length-1; i++) {
                 targetPath = targetPath.add(pathArray[i]);
@@ -287,7 +289,7 @@ public class ExcelUtils {
             if (cell.trim().equals(caseName)) {
 
                 if (opt >= -1.0) {
-                    System.out.println("recorded");
+//                    System.out.println("recorded");
                     double errTimes = Double.valueOf(row.getCell(errCellNum).toString()) + opt<0?0:Double.valueOf(row.getCell(errCellNum).toString()) + opt; // 11 for que
                     row.getCell(errCellNum).setCellValue(errTimes);
 

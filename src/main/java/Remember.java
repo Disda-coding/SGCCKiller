@@ -2,6 +2,7 @@ import utils.Utils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -53,7 +54,7 @@ public class Remember {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         String url = ExcelUtils.class.getClassLoader().getResource("Rem.xlsx").getPath().substring(1);
         Remember ex = new Remember();
         ex.eu = new ExcelUtils(url, 0);
