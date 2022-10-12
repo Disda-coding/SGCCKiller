@@ -36,7 +36,7 @@ public class Exam {
         System.out.println("错误大于等于" + times + "的题目一共有" + total + "道");
     }
 
-    public void testError(Double times) {
+    public void testError(Double times) throws InterruptedException {
         /**
          * @Method testError
          * @Author disda
@@ -49,7 +49,7 @@ public class Exam {
         test(1, questions.size() - 1, times);
     }
 
-    public void testAll() {
+    public void testAll() throws InterruptedException {
         int size = questions.size();
         int beg = 1, end = size;
         Scanner input = new Scanner(System.in);
@@ -78,7 +78,7 @@ public class Exam {
         test(beg, end, 0.0);
     }
 
-    public void test(int beg, int end, Double times) {
+    public void test(int beg, int end, Double times) throws InterruptedException {
         long sTime = System.currentTimeMillis();
         Scanner input = new Scanner(System.in);
         int all = 0;
@@ -99,7 +99,12 @@ public class Exam {
             if (Utils.isInteger(ans)) {
                 StringBuilder tmp = new StringBuilder();
                 for (int j = 0; j < ans.length(); j++) {
-                    tmp.append(seq[Integer.valueOf(ans.charAt(j)) - '0' - 1]);
+//                    System.out.println(Integer.valueOf(ans.charAt(j)));
+                    if(Integer.valueOf(ans.charAt(j))-'0'<=0||Integer.valueOf(ans.charAt(j))-'0'>=seq.length)
+                        tmp.append(seq[1]);
+                    else
+                        tmp.append(seq[Integer.valueOf(ans.charAt(j)) - '0' - 1]);
+                    System.out.println(tmp.charAt(tmp.length()-1));
                 }
                 ans = tmp.toString();
                 //  System.out.println(ans);
@@ -122,6 +127,7 @@ public class Exam {
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
             } else {
                 System.err.println("正确答案：" + que.getAnswer());
+                Thread.sleep(10);
                 if (eu.enable_explain == 1 || eu.enable_explain == -1) {
                     printExplains(que);
                 }
@@ -161,11 +167,11 @@ public class Exam {
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
                 System.out.println(seq[j] + ": " + que.ops.get(j));
             }
-            System.out.println("正确答案：" + que.getAnswer());
+            System.err.println("正确答案：" + que.getAnswer());
         }
     }
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
         String path = null;
         try {
 
