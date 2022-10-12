@@ -1,4 +1,6 @@
 
+import com.sun.tools.javac.util.StringUtils;
+import org.apache.poi.util.StringUtil;
 import utils.ExcelFilter;
 import utils.Utils;
 
@@ -62,8 +64,13 @@ public class Exam {
             if (nums[0].equals("")) {
                 test(beg, end, 0.0);
                 return;
-            } else {
-                beg = end = Integer.valueOf(nums[0]);
+            } else if (Utils.isNumeric(nums[0])){
+                int tmp = Integer.valueOf(nums[0]);
+                if(tmp>size||tmp<1){
+                    System.out.println("超过范围");
+                    tmp = 1;
+                }
+                beg = end = tmp;
 
             }
 
@@ -114,7 +121,7 @@ public class Exam {
                 System.out.println("跳过并重置错误计数器");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
             } else {
-                System.out.println("正确答案：" + que.getAnswer());
+                System.err.println("正确答案：" + que.getAnswer());
                 if (eu.enable_explain == 1 || eu.enable_explain == -1) {
                     printExplains(que);
                 }
