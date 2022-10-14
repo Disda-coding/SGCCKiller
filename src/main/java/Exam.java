@@ -104,16 +104,16 @@ public class Exam {
                         tmp.append(seq[1]);
                     else
                         tmp.append(seq[Integer.valueOf(ans.charAt(j)) - '0' - 1]);
-                    System.out.println(tmp.charAt(tmp.length()-1));
+
                 }
                 ans = tmp.toString();
                 //  System.out.println(ans);
 
             }
-
             if (que.getType().equals("是非题") || que.getType().equals("判断题")) {
                 if (ans.equals("A")) ans = "T";
-                else ans = "F";
+                else if (!ans.equals("S")||!ans.equals("s"))
+                    ans = "F";
             }
             if (ans.equals(que.getAnswer())) {
                 System.out.println("回答正确");
