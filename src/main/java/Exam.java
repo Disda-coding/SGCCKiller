@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Exam {
     private ArrayList<Question> questions = new ArrayList();
@@ -46,7 +47,7 @@ public class Exam {
          * @Date 2021/12/3 2:32 下午
          */
         printTotal(times);
-        test(1, questions.size() - 1, times);
+        test(1, questions.size() - 1, times,false);
     }
 
     public void testAll() throws InterruptedException {
@@ -62,7 +63,7 @@ public class Exam {
 
         } else if (nums.length == 1) {
             if (nums[0].equals("")) {
-                test(beg, end, 0.0);
+                test(beg, end, 0.0,false);
                 return;
             } else if (Utils.isNumeric(nums[0])){
                 int tmp = Integer.valueOf(nums[0]);
@@ -75,15 +76,22 @@ public class Exam {
             }
 
         }
-        test(beg, end, 0.0);
+        test(beg, end, 0.0,false);
     }
 
-    public void test(int beg, int end, Double times) throws InterruptedException {
+    public void test(int beg, int end, Double times,boolean random) throws InterruptedException {
         long sTime = System.currentTimeMillis();
         Scanner input = new Scanner(System.in);
         int all = 0;
         int err = 0;
-        for (int i = beg; i <= end; i++) {
+        ArrayList<Integer> indexx;
+        if(!random)
+            indexx = (ArrayList<Integer>) Stream.iterate(beg, item -> item + 1).limit(end-beg+1).collect(Collectors.toList());
+        else
+            indexx = Utils.randomSeq(beg,questions.size());
+//        ArrayList<Integer> seq = new ArrayList<>();
+            for (int i:indexx){
+//        for (int i = beg; i <= end; i++) {
             Question que = questions.get(i - 1);
             if (que.getErrTimes() < times) continue;
             all++;
@@ -243,29 +251,32 @@ public class Exam {
             while (!exitFlag) {
                 System.out.println("************* 选择功能 *************");
                 System.out.println("*********  1.测试全部题目  **********");
-                System.out.println("*********  2.测试错误题目  **********");
-                System.out.println("********   3.显示题目与答案  ********");
-                System.out.println("*********  4.查看历史得分  **********");
-                System.out.println("********   5.  重置题库    *********");
-                System.out.println("*********  6.   退出     **********");
+                System.out.println("********   2. 随机抽样     *********");
+                System.out.println("*********  3.测试错误题目  **********");
+                System.out.println("********   4.显示题目与答案  ********");
+                System.out.println("*********  5.查看历史得分  **********");
+                System.out.println("********   6.  重置题库    *********");
+                System.out.println("*********  7.   退出     **********");
                 String opt;
                 opt = input.nextLine();
                 double max_err = ex.eu.getMaxErrTimes(ex.questions);
 
                 if (opt == null || opt.equals("1") || opt.equals("")) {
                     ex.testAll();
-                } else if (opt.equals("2")) {
+                } else if (opt.equals("3")) {
                     System.out.println("最多错了 " + (int) max_err + " 次");
                     System.out.println("选择错误次数大于等于x的题目");
                     String times = input.nextLine();
                     if (times == null || times.equals("")) times = "0.0001";
                     ex.testError(Double.valueOf(times));
-                } else if (opt.equals("3")) {
-                    ex.printAll();
                 } else if (opt.equals("4")) {
-                    ex.eu.showRecords();
+                    ex.printAll();
                 } else if (opt.equals("5")) {
+                    ex.eu.showRecords();
+                } else if (opt.equals("6")) {
                     ex.removeErrTimes();
+                }else if(opt.equals("2")){
+                    ex.randomTest();
                 } else {
                     System.out.println("Bye Bye!");
                     exitFlag = true;
@@ -279,6 +290,23 @@ public class Exam {
         }
 
 
+    }
+
+    private void randomTest() throws InterruptedException {
+        int size = questions.size();
+        System.out.println("请输入采样范围，必须小于等于" + size + " 并用空格or-相连，回车默认全部！");
+        Scanner input = new Scanner(System.in);
+        String in = input.nextLine();
+        int beg = eu.sample;
+        if(in.equals("")){
+            System.out.println("默认抽取 "+eu.sample+" 道题\n");
+        }else if(!Utils.isNumeric(in)){
+            System.out.println("请输入数字");
+        }else{
+            beg = Integer.valueOf(in)<=0?eu.sample:Integer.valueOf(in);
+            System.out.println("抽取 "+beg+" 道题\n");
+        }
+        test(beg, beg, 0.0,true);
     }
 
     private void removeErrTimes() {

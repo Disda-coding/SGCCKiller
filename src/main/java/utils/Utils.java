@@ -1,6 +1,12 @@
 package utils;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Utils {
     public static boolean isNumeric(final CharSequence cs) {
@@ -42,6 +48,23 @@ public class Utils {
     public static boolean isInteger(String str) {
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
+    }
+    public static ArrayList<Integer> randomSeq(int size,int scope){
+        Set set = new HashSet<>();
+//		Random random = new Random();
+        while(true) {
+//			int n = random.nextInt(30)+1;
+            //int random = (int)(Math.random()*(MAX-MIX+1))+MIN;
+            int n = (int)(Math.random()*(scope))+1;
+            set.add(n);
+            if(set.size()>=size)
+                break;
+        }
+        return (ArrayList<Integer>)set.stream()
+                .collect(Collectors.toList());
+    }
+    public static void main(String[] args) {
+        System.out.println(randomSeq(1,19));
     }
 
 
