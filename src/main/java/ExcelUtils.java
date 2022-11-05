@@ -168,7 +168,7 @@ public class ExcelUtils {
             //因为全角空白会导致trim不掉的情况,因此需要重写trim
             String queAns = "";
             if (row.getCell(ans)!=null &&!row.getCell(ans).toString().equals(""))
-                queAns = Utils.trim(row.getCell(ans).toString());
+                queAns = Utils.trim(row.getCell(ans).toString().toUpperCase());
             String explains = "";
             if (row.getCell(explain) != null && !row.getCell(explain).toString().equals(""))
                 explains = row.getCell(explain).toString();

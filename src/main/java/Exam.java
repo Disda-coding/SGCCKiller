@@ -299,7 +299,7 @@ public class Exam {
         String in = input.nextLine();
         int beg = eu.sample;
         if(in.equals("")){
-            System.out.println("默认抽取 "+eu.sample+" 道题\n");
+            System.out.println("默认抽取 "+eu.sample+" 道题\ndfadfd");
         }else if(!Utils.isNumeric(in)){
             System.out.println("请输入数字");
         }else{
