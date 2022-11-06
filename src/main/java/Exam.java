@@ -134,7 +134,7 @@ public class Exam {
                 System.out.println("跳过并重置错误计数器");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
             } else {
-                System.err.println("\033[31m正确答案：" + que.getAnswer());
+                System.err.println("\033[31m正确答案：" + que.getAnswer()+"\033[m");
                 Thread.sleep(10);
                 if (eu.enable_explain == 1 || eu.enable_explain == -1) {
                     printExplains(que);
@@ -175,7 +175,7 @@ public class Exam {
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
                 System.out.println(seq[j] + ": " + que.ops.get(j));
             }
-            System.err.println("\033[31m正确答案：" + que.getAnswer());
+            System.err.println("\033[31m正确答案：" + que.getAnswer()+"\033[m");
         }
     }
 
