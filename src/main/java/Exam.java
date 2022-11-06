@@ -124,7 +124,7 @@ public class Exam {
                     ans = "F";
             }
             if (ans.equals(que.getAnswer())) {
-                System.out.println("回答正确");
+                System.out.println("\033[32m回答正确\033[m");
                 System.out.println();
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -eu.ratio, eu.styleCell);
                 if (eu.enable_explain == -1) {
@@ -134,7 +134,7 @@ public class Exam {
                 System.out.println("跳过并重置错误计数器");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
             } else {
-                System.err.println("正确答案：" + que.getAnswer());
+                System.err.println("\033[31m正确答案：" + que.getAnswer());
                 Thread.sleep(10);
                 if (eu.enable_explain == 1 || eu.enable_explain == -1) {
                     printExplains(que);
@@ -175,7 +175,7 @@ public class Exam {
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
                 System.out.println(seq[j] + ": " + que.ops.get(j));
             }
-            System.err.println("正确答案：" + que.getAnswer());
+            System.err.println("\033[31m正确答案：" + que.getAnswer());
         }
     }
 
@@ -250,13 +250,13 @@ public class Exam {
 
             while (!exitFlag) {
                 System.out.println("************* 选择功能 *************");
-                System.out.println("*********  1.测试全部题目  **********");
-                System.out.println("********   2. 随机抽样     *********");
-                System.out.println("*********  3.测试错误题目  **********");
-                System.out.println("********   4.显示题目与答案  ********");
-                System.out.println("*********  5.查看历史得分  **********");
-                System.out.println("********   6.  重置题库    *********");
-                System.out.println("*********  7.   退出     **********");
+                System.out.println("\033[31m*********  1.测试全部题目  **********");
+                System.out.println("\033[32m********   2. 随机抽样     *********");
+                System.out.println("\033[33m*********  3.测试错误题目  **********");
+                System.out.println("\033[34m********   4.显示题目与答案  ********");
+                System.out.println("\033[35m*********  5.查看历史得分  **********");
+                System.out.println("\033[36m********   6.  重置题库    *********");
+                System.out.println("\033[m*********  7.   退出     **********");
                 String opt;
                 opt = input.nextLine();
                 double max_err = ex.eu.getMaxErrTimes(ex.questions);
