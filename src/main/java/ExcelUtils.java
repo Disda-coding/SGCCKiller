@@ -27,7 +27,7 @@ public class ExcelUtils {
 
     private Sheet sheet;
     private Workbook workbook;
-    int styleCell, enable_explain,titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy, median, hard, qStart, calTime, isOrder, record,sample;
+    int styleCell, enable_explain,titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy, median, hard, qStart, calTime, isOrder, record,sample,includes_judge;
     String del;
     double ratio;
 
@@ -124,6 +124,7 @@ public class ExcelUtils {
             ratio = (Double) para.get("ratio");
             enable_explain = (Integer) para.get("enable_explain");
             sample = (Integer) para.get("sample");
+            includes_judge = (Integer) para.get("includes_judge");
         }
         else{
             //自动解析

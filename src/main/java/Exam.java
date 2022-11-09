@@ -91,11 +91,12 @@ public class Exam {
             indexx = Utils.randomSeq(beg,questions.size());
 //        ArrayList<Integer> seq = new ArrayList<>();
             for (int i:indexx){
-//        for (int i = beg; i <= end; i++) {
+//
             Question que = questions.get(i - 1);
+            if((que.getType().equals("是非题") || que.getType().equals("判断题"))&eu.includes_judge==0) continue;
             if (que.getErrTimes() < times) continue;
             all++;
-            System.out.print(i + ".[" + que.getType() + "]");
+            System.out.print(+i + ".\033[34m[" + que.getType() + "]\033[m");
             // 太长解决方案
             Utils.printLongStuff(que.getTitle(), eu.linesize);
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
@@ -161,9 +162,14 @@ public class Exam {
     }
 
     public void printExplains(Question que) {
-        System.out.print("[解析]");
+        if(que.getExplains()==null||que.getExplains().length()==0){
+            System.out.println("\033[m");
+            return ;
+        }
+
+        System.out.print("\033[34m[解析]");
         Utils.printLongStuff(que.getExplains(), eu.linesize);
-        System.out.println();
+        System.out.println("\033[m");
     }
 
     private void printAll() {
