@@ -167,9 +167,9 @@ public class Exam {
             return ;
         }
 
-        System.out.print("\033[34m[解析]");
+        System.out.print("\033[35m[解析]\033[m ");
         Utils.printLongStuff(que.getExplains(), eu.linesize);
-        System.out.println("\033[m");
+        System.out.println();
     }
 
     private void printAll() {
