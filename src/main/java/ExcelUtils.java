@@ -42,23 +42,43 @@ public class ExcelUtils {
     public void writeExcel(FileOutputStream fos) throws IOException {
         workbook.write(fos);
     }
-    public int getAndSetDefaultBeg(int size){
-        int newBeg = 1;
+    public int setDefaultBeg(int newBeg){
         Row row = sheet.getRow(titleCell+1);
         Cell cell =  row.getCell(memory);
         if (cell == null || cell.toString().equals("")) {
-            newBeg=mem+sample>size?1:mem+sample;
-            System.out.println(newBeg);
-            row.createCell(record);
-            row.getCell(record).setCellValue(newBeg);
-        }else{
-            mem = Integer.valueOf(cell.toString());
-            newBeg=mem+sample>size?1:mem+sample;
-            System.out.println(newBeg);
-            row.getCell(record).setCellValue(newBeg);
+            row.createCell(memory);
         }
+        row.getCell(memory).setCellValue(newBeg);
         return getAndSetMem(mem,newBeg);
     }
+    public int getNextBeg(int size){
+        Row row = sheet.getRow(titleCell+1);
+        Cell cell =  row.getCell(memory);
+        if (cell != null && !cell.toString().equals(""))
+            mem = (int) cell.getNumericCellValue();
+        int newBeg=mem+sample>size?1:mem+sample;
+        return newBeg;
+    }
+    public int getAndSetDefaultBeg(int size){
+        int newBeg = getNextBeg(size);
+        return setDefaultBeg(newBeg);
+    }
+//    public int getAndSetDefaultBeg(int size){
+//        int newBeg = 1;
+//        Row row = sheet.getRow(titleCell+1);
+//        Cell cell =  row.getCell(memory);
+//        if (cell == null || cell.toString().equals("")) {
+//            newBeg=mem+sample>size?1:mem+sample;
+//            row.createCell(memory);
+//            row.getCell(memory).setCellValue(newBeg);
+//        }else{
+//            mem = (int) cell.getNumericCellValue();
+//            newBeg=mem+sample>size?1:mem+sample;
+//            System.out.println(newBeg);
+//            row.getCell(memory).setCellValue(newBeg);
+//        }
+//        return getAndSetMem(mem,newBeg);
+//    }
     public int getAndSetMem(int temp,int newBeg){
         this.mem = newBeg;
         return temp;

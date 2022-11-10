@@ -54,13 +54,13 @@ public class Exam {
         int size = questions.size();
         int beg = 1, end = size;
         Scanner input = new Scanner(System.in);
-        System.out.println("请输入题号范围，必须小于等于" + size + " 并用空格or-相连，回车默认"+eu.sample+"题！");
+        System.out.println("请输入题号范围，必须小于等于" + size + " 并用空格or-相连，回车（下次回车可以继续）默认"+eu.sample+"题！");
         String in = input.nextLine();
         String[] nums = in.split(" |-");
         if (nums.length == 2) {
             beg = Integer.valueOf(nums[0]) <=0 ? 1:Integer.valueOf(nums[0]);
             end = Integer.valueOf(nums[1]) > size ? size : Integer.valueOf(nums[1]);
-
+            eu.setDefaultBeg(end+1>size?1:end+1);
         } else if (nums.length == 1) {
             if (nums[0].equals("")) {
 
