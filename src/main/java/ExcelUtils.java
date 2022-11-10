@@ -243,7 +243,7 @@ public class ExcelUtils {
             }
             for (int j = 0; j < optEnd - optBeg + 1; j++) {
                 if (!Utils.isNull(opsInExcel[j])) {
-                    ops.add(opsInExcel[j]);
+                    ops.add(opsInExcel[j].trim());
                 }
             }
             if (qType == quesType.OBJ && (queType.equals("问答题") || queType.equals("填空题")))

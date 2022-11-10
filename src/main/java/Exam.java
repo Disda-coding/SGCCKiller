@@ -217,7 +217,7 @@ public class Exam {
         }
 
 //        System.out.println(ExcelUtils.class.getClass().getResource("."));
-        System.out.println("Path!!"+path);
+        System.out.println("Author: Disda@github.com");
         File dir = new File(path);
         String[] name = dir.list(new ExcelFilter());
         List<String> names = Arrays.asList(name);
