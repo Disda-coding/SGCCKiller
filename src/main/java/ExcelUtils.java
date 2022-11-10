@@ -51,11 +51,15 @@ public class ExcelUtils {
         row.getCell(memory).setCellValue(newBeg);
         return getAndSetMem(mem,newBeg);
     }
-    public int getNextBeg(int size){
+    public int getCurrentBeg(){
         Row row = sheet.getRow(titleCell+1);
         Cell cell =  row.getCell(memory);
         if (cell != null && !cell.toString().equals(""))
             mem = (int) cell.getNumericCellValue();
+        return mem;
+    }
+    public int getNextBeg(int size){
+        getCurrentBeg();
         int newBeg=mem+sample>size?1:mem+sample;
         return newBeg;
     }

@@ -54,7 +54,7 @@ public class Exam {
         int size = questions.size();
         int beg = 1, end = size;
         Scanner input = new Scanner(System.in);
-        System.out.println("请输入题号范围，必须小于等于" + size + " 并用空格or-相连，回车（下次回车可以继续）默认"+eu.sample+"题！");
+        System.out.println("请输入题号范围，必须小于等于\033[36m" + size + "\033[m并用空格or-相连，回车从\033[34m"+eu.getCurrentBeg()+"\033[m开始默认\033[35m"+eu.sample+"\033[m题！");
         String in = input.nextLine();
         String[] nums = in.split(" |-");
         if (nums.length == 2) {
