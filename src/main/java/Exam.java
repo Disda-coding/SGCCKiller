@@ -54,7 +54,7 @@ public class Exam {
         int size = questions.size();
         int beg = 1, end = size;
         Scanner input = new Scanner(System.in);
-        System.out.println("请输入题号范围，必须小于等于" + size + " 并用空格or-相连，回车默认全部！");
+        System.out.println("请输入题号范围，必须小于等于" + size + " 并用空格or-相连，回车默认"+eu.sample+"题！");
         String in = input.nextLine();
         String[] nums = in.split(" |-");
         if (nums.length == 2) {
@@ -63,6 +63,10 @@ public class Exam {
 
         } else if (nums.length == 1) {
             if (nums[0].equals("")) {
+
+                beg = eu.getAndSetDefaultBeg(size);
+                int newBeg = beg+eu.sample;
+                end = newBeg-1>size?size:newBeg-1;
                 test(beg, end, 0.0,false);
                 return;
             } else if (Utils.isNumeric(nums[0])){
@@ -72,11 +76,11 @@ public class Exam {
                     tmp = 1;
                 }
                 beg = end = tmp;
-
             }
 
         }
         test(beg, end, 0.0,false);
+
     }
 
     public void test(int beg, int end, Double times,boolean random) throws InterruptedException {
@@ -135,7 +139,7 @@ public class Exam {
                 System.out.println("跳过并重置错误计数器");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
             } else {
-                System.err.println("\033[31m正确答案：" + que.getAnswer()+"\033[m");
+                System.err.println("\033[1:31m正确答案：" + que.getAnswer()+"\033[m");
                 Thread.sleep(10);
                 if (eu.enable_explain == 1 || eu.enable_explain == -1) {
                     printExplains(que);
@@ -261,8 +265,8 @@ public class Exam {
                 System.out.println("\033[33m*********  3.测试错误题目  **********");
                 System.out.println("\033[34m********   4.显示题目与答案  ********");
                 System.out.println("\033[35m*********  5.查看历史得分  **********");
-                System.out.println("\033[36m********   6.  重置题库    *********");
-                System.out.println("\033[m*********  7.   退出     **********");
+                System.out.println("\033[36m********   6.  重置题库   ***********");
+                System.out.println("\033[m*********  7.   退出     ***********");
                 String opt;
                 opt = input.nextLine();
                 double max_err = ex.eu.getMaxErrTimes(ex.questions);
@@ -300,7 +304,7 @@ public class Exam {
 
     private void randomTest() throws InterruptedException {
         int size = questions.size();
-        System.out.println("请输入采样范围，必须小于等于" + size + " 并用空格or-相连，回车默认全部！");
+        System.out.println("请输入采样大小，必须小于等于" + size + " 并用空格or-相连，回车默认"+eu.sample+"题！");
         Scanner input = new Scanner(System.in);
         String in = input.nextLine();
         int beg = eu.sample;

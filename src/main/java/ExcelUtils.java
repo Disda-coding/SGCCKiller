@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.yaml.snakeyaml.Yaml;
+import sun.lwawt.macosx.CPrinterDevice;
 import utils.ConfigFilter;
 import utils.Utils;
 
@@ -23,21 +24,47 @@ enum quesType {
 
 
 public class ExcelUtils {
+
     static boolean isSelect = true;
+
 
     private Sheet sheet;
     private Workbook workbook;
-    int styleCell, enable_explain,titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy, median, hard, qStart, calTime, isOrder, record,sample,includes_judge;
+    int styleCell, enable_explain,titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy, median, hard, qStart, calTime, isOrder, record,sample,includes_judge,memory;
     String del;
     double ratio;
 
     quesType qType = quesType.OBJ;
 
+
+    private int mem;
+
     public void writeExcel(FileOutputStream fos) throws IOException {
         workbook.write(fos);
     }
-
+    public int getAndSetDefaultBeg(int size){
+        int newBeg = 1;
+        Row row = sheet.getRow(titleCell+1);
+        Cell cell =  row.getCell(memory);
+        if (cell == null || cell.toString().equals("")) {
+            newBeg=mem+sample>size?1:mem+sample;
+            System.out.println(newBeg);
+            row.createCell(record);
+            row.getCell(record).setCellValue(newBeg);
+        }else{
+            mem = Integer.valueOf(cell.toString());
+            newBeg=mem+sample>size?1:mem+sample;
+            System.out.println(newBeg);
+            row.getCell(record).setCellValue(newBeg);
+        }
+        return getAndSetMem(mem,newBeg);
+    }
+    public int getAndSetMem(int temp,int newBeg){
+        this.mem = newBeg;
+        return temp;
+    }
     public ExcelUtils(String filePath, Integer index) throws FileNotFoundException, UnsupportedEncodingException, URISyntaxException {
+        this.mem = 1;
         System.out.println("选项为: "+filePath);
         FileInputStream fileInputStream = null;
         try {
@@ -112,6 +139,7 @@ public class ExcelUtils {
             explain = (Integer) attr.get("explain");
             errCell = (Integer) attr.get("errCell");
             record = (Integer) attr.get("record");
+            memory = (Integer) attr.get("memory");
             Map para = (Map<String, Object>) map.get("parameters");
             del = (String) para.get("delimeter");
             linesize = (Integer) para.get("linesize");
@@ -315,6 +343,10 @@ public class ExcelUtils {
             }
         }
     }
+
+
+
+
 
     public void recording(String out) {
         int rows = sheet.getPhysicalNumberOfRows();
