@@ -7,7 +7,58 @@ package pojo;
  * @create: 2022-11-22 16:04
  */
 public class Configuration {
-    int styleCell, enable_explain, titleCell, typeCell, ans, optBeg, optEnd, explain, errCell, linesize, easy, median, hard, qStart, calTime, isOrder, record, sample, includes_judge, memory;
+    int styleCell, enable_explain, titleCell, typeCell, ans,
+            optBeg, optEnd, explain, errCell, linesize, easy,
+            median, hard, qStart, calTime, isOrder, record,
+            sample, includes_judge, memory;
+
+    public String getDel() {
+        return del;
+    }
+
+    @Override
+    public String toString() {
+        return "Configuration{" +
+                "styleCell=" + styleCell +
+                ", enable_explain=" + enable_explain +
+                ", titleCell=" + titleCell +
+                ", typeCell=" + typeCell +
+                ", ans=" + ans +
+                ", optBeg=" + optBeg +
+                ", optEnd=" + optEnd +
+                ", explain=" + explain +
+                ", errCell=" + errCell +
+                ", linesize=" + linesize +
+                ", easy=" + easy +
+                ", median=" + median +
+                ", hard=" + hard +
+                ", qStart=" + qStart +
+                ", calTime=" + calTime +
+                ", isOrder=" + isOrder +
+                ", record=" + record +
+                ", sample=" + sample +
+                ", includes_judge=" + includes_judge +
+                ", memory=" + memory +
+                ", del='" + del + '\'' +
+                ", ratio=" + ratio +
+                '}';
+    }
+
+    public void setDel(String del) {
+        this.del = del;
+    }
+
+    public double getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(double ratio) {
+        this.ratio = ratio;
+    }
+
+    String del;
+
+    double ratio;
 
     public void setStyleCell(int styleCell) {
         this.styleCell = styleCell;
@@ -89,31 +140,7 @@ public class Configuration {
         this.memory = memory;
     }
 
-    @Override
-    public String toString() {
-        return "Configuration{" +
-                "styleCell=" + styleCell +
-                ", enable_explain=" + enable_explain +
-                ", titleCell=" + titleCell +
-                ", typeCell=" + typeCell +
-                ", ans=" + ans +
-                ", optBeg=" + optBeg +
-                ", optEnd=" + optEnd +
-                ", explain=" + explain +
-                ", errCell=" + errCell +
-                ", linesize=" + linesize +
-                ", easy=" + easy +
-                ", median=" + median +
-                ", hard=" + hard +
-                ", qStart=" + qStart +
-                ", calTime=" + calTime +
-                ", isOrder=" + isOrder +
-                ", record=" + record +
-                ", sample=" + sample +
-                ", includes_judge=" + includes_judge +
-                ", memory=" + memory +
-                '}';
-    }
+
     public Configuration(){}
     public Configuration(int styleCell, int enable_explain, int titleCell, int typeCell, int ans, int optBeg, int optEnd, int explain, int errCell, int linesize, int easy, int median, int hard, int qStart, int calTime, int isOrder, int record, int sample, int includes_judge, int memory) {
         this.styleCell = styleCell;

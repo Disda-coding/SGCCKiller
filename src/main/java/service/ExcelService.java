@@ -1,6 +1,7 @@
 package service;
 
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  * @program: QnA
@@ -11,6 +12,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 public interface ExcelService {
     public void showRecords(Sheet sheet);
     public void recording(String out, Sheet sheet);
+    public void getCellByCaseName(Workbook workbook, Sheet sheet, String caseName, int caseCellNum, int errCellNum, double opt, int styleCell);
 
 
 }

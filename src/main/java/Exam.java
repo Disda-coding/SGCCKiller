@@ -1,4 +1,5 @@
 import pojo.Question;
+import service.impl.UIServiceImpl;
 import utils.ExcelFilter;
 import utils.Utils;
 
@@ -248,7 +249,7 @@ public class Exam {
                 } else {
                     flag = false;
                     exitFlag = true;
-                    Utils.sayGoodBye();
+                    UIServiceImpl.getInstance().sayGoodBye();
                 }
             } else {
 //                url = ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath();
