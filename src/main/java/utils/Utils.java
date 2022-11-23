@@ -2,11 +2,9 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Utils {
     public static boolean isNumeric(final CharSequence cs) {
@@ -28,7 +26,7 @@ public class Utils {
     }
 
     public static boolean isNull(String arg){
-        if (arg==null||arg.equals("")) return true;
+        if (arg==null||arg.trim().equals("")) return true;
         return false;
     }
     public static String trim(String s){
@@ -63,9 +61,36 @@ public class Utils {
         return (ArrayList<Integer>)set.stream()
                 .collect(Collectors.toList());
     }
-    public static void main(String[] args) {
-        System.out.println(randomSeq(1,19));
-    }
+ public static void sayGoodBye(){
+        String bye =
+                "                       _oo0oo_\n" +
+                "                      o8888888o\n" +
+                "                      88\" . \"88\n" +
+                "                      (| -_- |)\n" +
+                "                      0\\  =  /0\n" +
+                "                    ___/`---'\\___\n" +
+                "                  .' \\\\|     | '.\n" +
+                "                 / \\\\|||  :  |||// \\\n" +
+                "                / _||||| -:- |||||- \\\n" +
+                "               |   | \\\\\\  -  /// |   |\n" +
+                "               | \\_|  ''\\---/''  |_/ |\n" +
+                "               \\  .-\\__  '-'  ___/-. /\n" +
+                "             ___'. .'  /--.--\\  `. .'___\n" +
+                "          .\"\" '<  `.___\\_<|>_/___.' >' \"\".\n" +
+                "         | | :  `- \\`.;`\\ _ /`;.`/ - ` : | |\n" +
+                "         \\  \\ `_.   \\_ __\\ /__ _/   .-` /  /\n" +
+                "     =====`-.____`.___ \\_____/___.-`___.-'=====\n" +
+                "                       `=---='\n" +
+                "\n" +
+                "\n" +
+                "     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+                "\n" +
+                "               佛祖保佑         永无BUG\n" +
+                "\n" +
+                "\n"
+                ;
+     System.out.println(bye);
+ }
 
 
 }

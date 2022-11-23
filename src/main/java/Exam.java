@@ -1,10 +1,10 @@
-
-import com.sun.tools.javac.util.StringUtils;
-import org.apache.poi.util.StringUtil;
+import pojo.Question;
 import utils.ExcelFilter;
 import utils.Utils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.util.*;
@@ -136,10 +136,11 @@ public class Exam {
                     printExplains(que);
                 }
             } else if (ans.equals("S")||ans.equals("s")) {
-                System.out.println("跳过并重置错误计数器");
+                System.out.println("\033[1:32m正确答案：" + que.getAnswer()+"\033[m");
+                System.out.println("跳过并重置错误计数器\n");
                 eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
             } else {
-                System.err.println("\033[1:31m正确答案：" + que.getAnswer()+"\033[m");
+                System.out.println("\033[1:31m正确答案：" + que.getAnswer()+"\033[m");
                 Thread.sleep(10);
                 if (eu.enable_explain == 1 || eu.enable_explain == -1) {
                     printExplains(que);
@@ -247,6 +248,7 @@ public class Exam {
                 } else {
                     flag = false;
                     exitFlag = true;
+                    Utils.sayGoodBye();
                 }
             } else {
 //                url = ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath();
