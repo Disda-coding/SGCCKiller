@@ -37,13 +37,10 @@ public class ExcelServiceImpl implements ExcelService {
             }
             //获取sheet
             sheet = workbook.getSheetAt(index);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         configuration = configurationService.getConfiguration();
-
     }
 
     /**
@@ -55,7 +52,7 @@ public class ExcelServiceImpl implements ExcelService {
      * @Exception
      * @Date 2021/12/3 2:35 下午
      */
-    public void getCellByCaseName(Workbook workbook, Sheet sheet, String caseName, int caseCellNum, int errCellNum, double opt, int styleCell) {
+    public void getCellByCaseName( String caseName, int caseCellNum, int errCellNum, double opt, int styleCell) {
 
         int rows = sheet.getPhysicalNumberOfRows();
         CellStyle style = workbook.createCellStyle();
@@ -106,11 +103,10 @@ public class ExcelServiceImpl implements ExcelService {
 
     /**
      * 记录成绩
+     *  @param out
      *
-     * @param out
-     * @param sheet
      */
-    public void recording(String out, Sheet sheet) {
+    public void recording(String out) {
         int rows = sheet.getPhysicalNumberOfRows();
         for (int i = 0; i < rows && (sheet.getRow(i).getCell(configuration.getTitleCell()) != null); i++) {
             Row row = sheet.getRow(i);

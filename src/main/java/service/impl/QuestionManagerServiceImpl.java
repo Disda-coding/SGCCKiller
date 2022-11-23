@@ -264,23 +264,23 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
             if (ans.equals(que.getAnswer())) {
                 System.out.println("\033[32m回答正确\033[m");
                 System.out.println();
-                excelService.getCellByCaseName(workbook,que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), - configuration.getRatio(), configuration.getStyleCell());
-                if (eu.enable_explain == -1) {
+                excelService.getCellByCaseName(que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), -configuration.getRatio(), configuration.getStyleCell());
+                if (configuration.getEnable_explain() == -1) {
                     printExplains(que);
                 }
             } else if (ans.equals("S")||ans.equals("s")) {
                 System.out.println("\033[1:32m正确答案：" + que.getAnswer()+"\033[m");
                 System.out.println("跳过并重置错误计数器\n");
-                eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, -2.0, eu.styleCell);
+                excelService.getCellByCaseName(que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), -2.0, configuration.getStyleCell());
             } else {
                 System.out.println("\033[1:31m正确答案：" + que.getAnswer()+"\033[m");
                 Thread.sleep(10);
-                if (eu.enable_explain == 1 || eu.enable_explain == -1) {
+                if (configuration.getEnable_explain() == 1 || configuration.getEnable_explain() == -1) {
                     printExplains(que);
                 }
                 System.out.println();
                 err++;
-                eu.getCellByCaseName(que.getTitle(), eu.titleCell, eu.errCell, 1.0, eu.styleCell);
+                excelService.getCellByCaseName(que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), 1.0, configuration.getStyleCell());
                 que.increaseErrTimes();
             }
         }
