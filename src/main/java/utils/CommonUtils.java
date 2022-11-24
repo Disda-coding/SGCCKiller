@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Utils {
+public class CommonUtils {
     public static boolean isNumeric(final CharSequence cs) {
         // 判断是否为空，如果为空则返回false
         if (cs==null||cs.length()==0) {

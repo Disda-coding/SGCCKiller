@@ -8,7 +8,7 @@ import pojo.Question;
 import service.ConfigurationService;
 import service.ExcelService;
 import service.QuestionManagerService;
-import utils.Utils;
+import utils.CommonUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,11 +23,21 @@ import java.util.stream.Stream;
 public class QuestionManagerServiceImpl implements QuestionManagerService{
     Configuration configuration;
     ExcelService excelService;
+    private ArrayList<Question> questions;
     private int cursor;
     private char[] seq = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
+    public void setExcelService(String filePath,int index){
+        excelService = new ExcelServiceImpl(filePath,index);
+    }
+
+    public ExcelService getExcelService(){
+        return excelService;
+    }
+
     private QuestionManagerServiceImpl() {
         this.cursor = 1;
+//        this.question = new ArrayList();
         ConfigurationService configurationService = YamlConfigurationServiceImpl.getInstance();
         configuration = configurationService.getConfiguration();
     }
@@ -36,17 +46,17 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
         private static final QuestionManagerService INSTANCE =  new QuestionManagerServiceImpl();
     }
 
-    public QuestionManagerService getInstance(){
+    public static QuestionManagerService getInstance(){
         return SingleQuesManagerSerImpl.INSTANCE;
     }
 
 
     /**
      * 加载题库内的题目传入Question对象数组
-     * @param questions
-     * @param sheet
      */
-    public void getTestData(ArrayList<Question> questions,Sheet sheet) {
+    public void getTestData() {
+        questions = new ArrayList<>();
+        Sheet sheet = excelService.getSheet();
         double max_err = 0;
         int rows = sheet.getPhysicalNumberOfRows();
 
@@ -58,7 +68,7 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
             //因为全角空白会导致trim不掉的情况,因此需要重写trim
             String queAns = "";
             if (row.getCell(configuration.getAns()) != null && !row.getCell(configuration.getAns()).toString().equals(""))
-                queAns = Utils.trim(row.getCell(configuration.getAns()).toString().toUpperCase());
+                queAns = CommonUtils.trim(row.getCell(configuration.getAns()).toString().toUpperCase());
             String explains = "";
             if (row.getCell(configuration.getExplain()) != null && !row.getCell(configuration.getExplain()).toString().equals(""))
                 explains = row.getCell(configuration.getExplain()).toString();
@@ -83,7 +93,7 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
                     opsInExcel[j - configuration.getOptBeg()] = row.getCell(j).toString();
             }
             for (int j = 0; j < configuration.getOptEnd() - configuration.getOptBeg() + 1; j++) {
-                if (!Utils.isNull(opsInExcel[j])) {
+                if (!CommonUtils.isNull(opsInExcel[j])) {
                     ops.add(opsInExcel[j].trim());
                 }
             }
@@ -141,7 +151,8 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
     }
 
 
-    public int setDefaultBeg(int newBeg, Sheet sheet) {
+    public int setDefaultBeg(int newBeg) {
+        Sheet sheet = excelService.getSheet();
         Row row = sheet.getRow(configuration.getTitleCell() + 1);
         Cell cell = row.getCell(configuration.getMemory());
         if (cell == null || cell.toString().equals("")) {
@@ -156,7 +167,8 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
         return temp;
     }
 
-    public int getCurrentBeg(Sheet sheet) {
+    public int getCurrentBeg() {
+        Sheet sheet = excelService.getSheet();
         Row row = sheet.getRow(configuration.getTitleCell() + 1);
         Cell cell = row.getCell(configuration.getMemory());
         if (cell != null && !cell.toString().equals(""))
@@ -164,18 +176,18 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
         return cursor;
     }
 
-    public int getNextBeg(int size, Sheet sheet) {
-        getCurrentBeg(sheet);
+    public int getNextBeg(int size) {
+        getCurrentBeg();
         int newBeg = cursor + configuration.getSample() > size ? 1 : cursor + configuration.getSample();
         return newBeg;
     }
 
-    public int getAndSetDefaultBeg(int size, Sheet sheet) {
-        int newBeg = getNextBeg(size, sheet);
-        return setDefaultBeg(newBeg, sheet);
+    public int getAndSetDefaultBeg(int size) {
+        int newBeg = getNextBeg(size);
+        return setDefaultBeg(newBeg);
     }
 
-    public double getMaxErrTimes(List<Question> questions) {
+    public double getMaxErrTimes() {
         double max_err = 0;
         for (Question q : questions) {
             max_err = max_err >= q.getErrTimes() ? max_err : q.getErrTimes();
@@ -192,32 +204,34 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
      * @Date 2021/12/3 2:30 下午
      */
 
-    public static void printTotal(Double times, ArrayList<Question> questions) {
+    public void printTotal(Double times) {
         int size = questions.size();
         int total = 0;
-        for (int i = 1; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             Question que = questions.get(i);
             if (que.getErrTimes() < times) continue;
             total++;
         }
-        System.out.println("错误大于等于" + times + "的题目一共有" + total + "道");
-    }
-
-    public void testError(Double times, ArrayList<Question> questions) throws InterruptedException {
-        /**
-         * @Method testError
-         * @Author disda
-         * @Description 用于测试错误次数大于times的方法
-         * @Return void
-         * @Exception
-         * @Date 2021/12/3 2:32 下午
-         */
-        printTotal(times,questions);
-        test(1, questions.size() - 1, times,false, questions);
+        System.out.println("错误大于等于" + times + "的题目一共有" + total + "道!");
     }
 
 
-    public void test(int beg, int end, Double times,boolean random,ArrayList<Question> questions) throws InterruptedException {
+    /**
+     * @Method testError
+     * @Author disda
+     * @Description 用于测试错误次数大于times的方法
+     * @Return void
+     * @Exception
+     * @Date 2021/12/3 2:32 下午
+     */
+    public void testError(Double times) throws InterruptedException {
+
+        printTotal(times);
+        test(1, questions.size() - 1, times,false);
+    }
+
+
+    public void test(int beg, int end, Double times,boolean random) throws InterruptedException {
         long sTime = System.currentTimeMillis();
         Scanner input = new Scanner(System.in);
         int all = 0;
@@ -226,7 +240,7 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
         if(!random)
             indexx = (ArrayList<Integer>) Stream.iterate(beg, item -> item + 1).limit(end-beg+1).collect(Collectors.toList());
         else
-            indexx = Utils.randomSeq(beg,questions.size());
+            indexx = CommonUtils.randomSeq(beg,questions.size());
 //
         for (int i:indexx){
             Question que = questions.get(i - 1);
@@ -235,14 +249,14 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
             all++;
             System.out.print(+i + ".\033[34m[" + que.getType() + "]\033[m");
             // 太长解决方案
-            Utils.printLongStuff(que.getTitle(), configuration.getLinesize());
+            CommonUtils.printLongStuff(que.getTitle(), configuration.getLinesize());
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
                 System.out.println(seq[j] + ": " + que.ops.get(j));
             }
             System.out.println("请输入你的答案：（可以使用a/A/1代表第一个选项,s可以跳过并重置错误次数）");
             String ans = input.nextLine().toUpperCase();
 
-            if (Utils.isInteger(ans)) {
+            if (CommonUtils.isInteger(ans)) {
                 StringBuilder tmp = new StringBuilder();
                 for (int j = 0; j < ans.length(); j++) {
 //                    System.out.println(Integer.valueOf(ans.charAt(j)));
@@ -264,14 +278,14 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
             if (ans.equals(que.getAnswer())) {
                 System.out.println("\033[32m回答正确\033[m");
                 System.out.println();
-                excelService.getCellByCaseName(que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), -configuration.getRatio(), configuration.getStyleCell());
+                excelService.getCellByCaseName(que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), -configuration.getRatio(), configuration.getStyleCell(),que);
                 if (configuration.getEnable_explain() == -1) {
                     printExplains(que);
                 }
             } else if (ans.equals("S")||ans.equals("s")) {
                 System.out.println("\033[1:32m正确答案：" + que.getAnswer()+"\033[m");
                 System.out.println("跳过并重置错误计数器\n");
-                excelService.getCellByCaseName(que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), -2.0, configuration.getStyleCell());
+                excelService.getCellByCaseName(que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), -2.0, configuration.getStyleCell(),que);
             } else {
                 System.out.println("\033[1:31m正确答案：" + que.getAnswer()+"\033[m");
                 Thread.sleep(10);
@@ -280,8 +294,8 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
                 }
                 System.out.println();
                 err++;
-                excelService.getCellByCaseName(que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), 1.0, configuration.getStyleCell());
-                que.increaseErrTimes();
+                excelService.getCellByCaseName(que.getTitle(), configuration.getTitleCell(), configuration.getErrCell(), 1.0, configuration.getStyleCell(),que);
+//                que.increaseErrTimes();
             }
         }
         long eTime = System.currentTimeMillis();
@@ -296,6 +310,87 @@ public class QuestionManagerServiceImpl implements QuestionManagerService{
         out = "您一共做了: " + all + "题\t您的得分： " + res + out;
         excelService.recording(out);
 
+    }
+
+    public void printExplains(Question que) {
+        if(que.getExplains()==null||que.getExplains().length()==0){
+            System.out.println("\033[m");
+            return ;
+        }
+
+        System.out.print("\033[35m[解析]\033[m ");
+        CommonUtils.printLongStuff(que.getExplains(), configuration.getLinesize());
+        System.out.println();
+    }
+    public void testAll() throws InterruptedException {
+        int size = questions.size();
+        int beg = 1, end = size;
+        Scanner input = new Scanner(System.in);
+        System.out.println("请输入题号范围，必须小于等于\033[36m" + size + "\033[m并用空格or-相连，回车从\033[34m"+getCurrentBeg()+"\033[m开始默认\033[35m"+configuration.getSample()+"\033[m题！");
+        String in = input.nextLine();
+        String[] nums = in.split(" |-");
+        if (nums.length == 2) {
+            beg = Integer.valueOf(nums[0]) <=0 ? 1:Integer.valueOf(nums[0]);
+            end = Integer.valueOf(nums[1]) > size ? size : Integer.valueOf(nums[1]);
+            setDefaultBeg(end+1>size?1:end+1);
+        } else if (nums.length == 1) {
+            if (nums[0].equals("")) {
+
+                beg = getAndSetDefaultBeg(size);
+                int newBeg = beg+configuration.getSample();
+                end = newBeg-1>size?size:newBeg-1;
+                test(beg, end, 0.0,false);
+                return;
+            } else if (CommonUtils.isNumeric(nums[0])){
+                int tmp = Integer.valueOf(nums[0]);
+                if(tmp>size||tmp<1){
+                    System.out.println("超过范围");
+                    tmp = 1;
+                }
+                beg = end = tmp;
+            }
+
+        }
+        test(beg, end, 0.0,false);
+
+    }
+
+    @Override
+    public void printAll() {
+        int size = questions.size() - 1;
+        for (int i = 1; i <= size; i++) {
+            Question que = questions.get(i);
+            System.out.print(i + ". ");
+            CommonUtils.printLongStuff(que.getTitle(), configuration.getLinesize());
+            for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
+                System.out.println(seq[j] + ": " + que.ops.get(j));
+            }
+            System.out.println("\033[31m正确答案：" + que.getAnswer()+"\033[m");
+        }
+    }
+
+    public void removeErrTimes() {
+        for (int i = 0; i < questions.size(); i++) {
+            Question que = questions.get(i);
+            excelService.getCellByCaseName(que.getTitle(),configuration.getTitleCell(), configuration.getErrCell(), -2.0, configuration.getStyleCell(),que);
+        }
+        System.out.println("已重置！！！");
+    }
+    public void randomTest() throws InterruptedException {
+        int size = questions.size();
+        System.out.println("请输入采样大小，必须小于等于" + size + " 并用空格or-相连，回车默认"+configuration.getSample()+"题！");
+        Scanner input = new Scanner(System.in);
+        String in = input.nextLine();
+        int beg = configuration.getSample();
+        if(in.equals("")){
+            System.out.println("默认抽取 "+configuration.getSample()+" 道题\ndfadfd");
+        }else if(!CommonUtils.isNumeric(in)){
+            System.out.println("请输入数字");
+        }else{
+            beg = Integer.valueOf(in)<=0?configuration.getSample():Integer.valueOf(in);
+            System.out.println("抽取 "+beg+" 道题\n");
+        }
+        test(beg, beg, 0.0,true);
     }
 
 }

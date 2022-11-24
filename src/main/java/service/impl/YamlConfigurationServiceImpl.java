@@ -6,14 +6,13 @@ import pojo.Configuration;
 import service.ConfigurationService;
 import service.UIService;
 import utils.ConfigFilter;
+import utils.PathUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringJoiner;
 
 /**
  * @program: QnA
@@ -37,25 +36,7 @@ public class YamlConfigurationServiceImpl implements ConfigurationService {
     }
 
     public String getConfigPath(){
-        StringJoiner targetPath = new StringJoiner("/");
-        String propPath = null;
-        try {
-            propPath = YamlConfigurationServiceImpl.class.getClassLoader().getResource(".").getPath(); //读取target下面的excel
-        } catch (NullPointerException e) {
-            System.out.println("jar包环境");
-            String jar_path = null;
-            try {
-                jar_path = YamlConfigurationServiceImpl.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-            } catch (URISyntaxException ex) {
-                System.err.println("yaml目录不存在或无法解析！");
-                ex.printStackTrace();
-            }
-            String[] pathArray = jar_path.split("/");
-            for (int i = 0; i < pathArray.length - 1; i++) {
-                targetPath = targetPath.add(pathArray[i]);
-            }
-            propPath = targetPath.toString();
-        }
+        String propPath = PathUtils.getPath();
         File dir = new File(propPath);
         String[] names = dir.list(new ConfigFilter());
         String path = uiService.selectConfigPath(names);

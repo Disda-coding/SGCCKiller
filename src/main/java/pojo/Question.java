@@ -2,6 +2,7 @@ package pojo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+//不够pojo 得优化
 
 public class Question {
 
@@ -60,6 +61,9 @@ public class Question {
     public double getErrTimes() {
         return errTimes;
     }
+    public void setErrTimes(double times){
+        this.errTimes=times;
+    }
 
 
     public String getExplains() {
@@ -67,6 +71,10 @@ public class Question {
     }
     public void increaseErrTimes(){
         this.errTimes++;
+    }
+
+    public void resetErrTimes(){
+        this.errTimes=0.0;
     }
 
     //要重写equals方法以及hashCode方法，才能在set集合中保证题目不重复

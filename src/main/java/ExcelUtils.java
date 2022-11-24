@@ -5,7 +5,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.yaml.snakeyaml.Yaml;
 import pojo.Question;
 import utils.ConfigFilter;
-import utils.Utils;
+import utils.CommonUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -198,7 +198,7 @@ public class ExcelUtils {
             //因为全角空白会导致trim不掉的情况,因此需要重写trim
             String queAns = "";
             if (row.getCell(ans) != null && !row.getCell(ans).toString().equals(""))
-                queAns = Utils.trim(row.getCell(ans).toString().toUpperCase());
+                queAns = CommonUtils.trim(row.getCell(ans).toString().toUpperCase());
             String explains = "";
             if (row.getCell(explain) != null && !row.getCell(explain).toString().equals(""))
                 explains = row.getCell(explain).toString();
@@ -223,7 +223,7 @@ public class ExcelUtils {
                     opsInExcel[j - optBeg] = row.getCell(j).toString();
             }
             for (int j = 0; j < optEnd - optBeg + 1; j++) {
-                if (!Utils.isNull(opsInExcel[j])) {
+                if (!CommonUtils.isNull(opsInExcel[j])) {
                     ops.add(opsInExcel[j].trim());
                 }
             }
