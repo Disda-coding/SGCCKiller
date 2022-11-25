@@ -88,7 +88,6 @@ public class ExcelServiceImpl implements ExcelService {
      */
 //    String caseName, int caseCellNum, int errCellNum, double opt, int styleCell,
     public void getCellByCaseName(Question que,double opt) {
-
         int rows = sheet.getPhysicalNumberOfRows();
         CellStyle style = workbook.createCellStyle();
         for (int i = 0; i < rows && (sheet.getRow(i).getCell(configuration.getTitleCell()) != null); i++) {
@@ -115,17 +114,45 @@ public class ExcelServiceImpl implements ExcelService {
                     break;
                 } else if (opt == -2.0) {
                     row.getCell(configuration.getErrCell()).setCellValue(0.0);
-                    //到时候解耦合
-                    questionManagerService.resetErrTimes(que);
                     this.fillCell(row, style, configuration.getStyleCell(), (new HSSFColor.WHITE()).getIndex());
-                    //  删除整列
-                    deleteColumn(sheet,configuration.getRecord());
-
                 }
 
             }
         }
     }
+
+    @Override
+    public void getCellByIndex(int index, double opt) {
+        int qStart = configuration.getqStart();
+        CellStyle style = workbook.createCellStyle();
+        Row row = sheet.getRow(index);
+        if (opt >= -1.0) {
+            double errTimes = 0.0+opt;
+            if(row.getCell(configuration.getErrCell())!=null){
+                errTimes = Double.valueOf(row.getCell(configuration.getErrCell()).toString()) + opt < 0 ? 0 : Double.valueOf(row.getCell(configuration.getErrCell()).toString()) + opt; // 11 for que
+
+            }else{
+                row.createCell(configuration.getErrCell());
+            }
+            row.getCell(configuration.getErrCell()).setCellValue(errTimes);
+            //到时候解耦合
+//            que.setErrTimes(errTimes);
+            if (errTimes <= configuration.getEasy()) {
+                fillCell(row, style, configuration.getStyleCell(), new HSSFColor.GOLD().getIndex());
+            } else if (errTimes > configuration.getEasy() && errTimes <= configuration.getMedian()) {
+                fillCell(row, style, configuration.getStyleCell(), new HSSFColor.LIGHT_ORANGE().getIndex());
+            } else if (errTimes > configuration.getMedian() && errTimes <= configuration.getHard()) {
+                fillCell(row, style, configuration.getStyleCell(), new HSSFColor.ORANGE().getIndex());
+            } else if (errTimes > configuration.getHard()) {
+                fillCell(row, style, configuration.getStyleCell(), new HSSFColor.RED().getIndex());
+            }
+        } else if (opt == -2.0) {
+            row.getCell(configuration.getErrCell()).setCellValue(0.0);
+            this.fillCell(row, style, configuration.getStyleCell(), (new HSSFColor.WHITE()).getIndex());
+
+        }
+    }
+
     //删掉指定column及其后面的columns
     public void deleteColumn( Sheet sheet, int columnToDelete ){
         int maxColumn = 0;

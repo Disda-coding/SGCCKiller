@@ -281,14 +281,18 @@ public class TestManagerServiceImpl implements TestManagerService {
             if (ans.equals(que.getAnswer())) {
                 System.out.println("\033[32m回答正确\033[m");
                 System.out.println();
-                excelService.getCellByCaseName(que, -configuration.getRatio());
+                que.setErrTimes(que.getErrTimes()-configuration.getRatio());
+                excelService.getCellByIndex(i,-configuration.getRatio());
+//                excelService.getCellByCaseName(que, -configuration.getRatio());
                 if (configuration.getEnable_explain() == -1) {
                     printExplains(que);
                 }
             } else if (ans.equals("S")||ans.equals("s")) {
                 System.out.println("\033[1:32m正确答案：" + que.getAnswer()+"\033[m");
                 System.out.println("跳过并重置错误计数器\n");
-                excelService.getCellByCaseName(que, -2.0);
+                questionManagerService.resetErrTimes(que);
+                excelService.getCellByIndex(i,-2.0);
+//                excelService.getCellByCaseName(que, -2.0);
             } else {
                 System.out.println("\033[1:31m正确答案：" + que.getAnswer()+"\033[m");
                 Thread.sleep(10);
@@ -297,7 +301,9 @@ public class TestManagerServiceImpl implements TestManagerService {
                 }
                 System.out.println();
                 err++;
-                excelService.getCellByCaseName(que, 1.0);
+                questionManagerService.increaseErrTimes(que);
+                excelService.getCellByIndex(i,1.0);
+//                excelService.getCellByCaseName(que, 1.0);
 //                que.increaseErrTimes();
             }
         }

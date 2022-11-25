@@ -39,7 +39,7 @@
 ## Ver2.0
 - 重构代码
 - 高内聚，低耦合
-- UI、Question和Excel模块还需解耦合
+- 测试错误是否能增加
 
 ## TodoList
 - 兼容xls格式 √

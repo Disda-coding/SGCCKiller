@@ -19,6 +19,8 @@ public interface ExcelService {
 
     void getCellByCaseName(Question que, double opt);
 
+    void getCellByIndex(int index, double opt);
+
     Sheet getSheet();
 
     void setSheet(Sheet sheet);
