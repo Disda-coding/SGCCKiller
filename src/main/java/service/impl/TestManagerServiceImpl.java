@@ -228,9 +228,8 @@ public class TestManagerServiceImpl implements TestManagerService {
      * @Date 2021/12/3 2:32 下午
      */
     public void testError(Double times) throws InterruptedException {
-
         printTotal(times);
-        test(1, questions.size() - 1, times,false);
+        test(1, questions.size(), times,false);
     }
 
 
@@ -275,7 +274,7 @@ public class TestManagerServiceImpl implements TestManagerService {
             }
             if (que.getType().equals("是非题") || que.getType().equals("判断题")) {
                 if (ans.equals("A")) ans = "T";
-                else if (!ans.equals("S")||!ans.equals("s"))
+                else if (!ans.equals("S")&&!ans.equals("s"))
                     ans = "F";
             }
             if (ans.equals(que.getAnswer())) {
