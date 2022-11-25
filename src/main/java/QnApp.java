@@ -1,25 +1,35 @@
-/**
- * @program: QnA
- * @description:
- * @author: Disda
- * @create: 2022-11-23 15:14
- */
-public class QnA {
+import service.TestManagerService;
+import service.UIService;
+import service.impl.TestManagerServiceImpl;
+import service.impl.UIServiceImpl;
+import utils.PathUtils;
 
-//    public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
-//        String path = PathUtils.getPath();
-//        System.out.println("Author: disda-coding.github.io");
-//        File dir = new File(path);
-//        String[] name = dir.list(new ExcelFilter());
-//        List<String> names = Arrays.asList(name);
-//        System.out.println(names);
-//        Collections.sort(names);
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.util.List;
+
+public class QnApp {
+
+    public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
+
+        TestManagerService questionManagerService = TestManagerServiceImpl.getInstance();
+        // 初始化UIService
+        UIService uiService = UIServiceImpl.getInstance();
+        uiService.helloWorld();
+        // 获取题库所在
+        String path = PathUtils.getPath();
+        // 获取所有排序后的题库
+        List<String> names   = PathUtils.getTestNames();
+        String url = URLDecoder.decode(path  + names.get(0), "utf-8");
+
+        uiService.mainMenu(path,names);
 //        Scanner input = new Scanner(System.in);
 //        boolean flag = true;
-//        String url = URLDecoder.decode(path + "/" + name[0], "utf-8");
+
+
 //        while (flag) {
 //            boolean exitFlag = false;
-//            Exam ex = new Exam();
 //            if (names.size() > 1) {
 //                System.out.println("请选择要打开的题库");
 //                System.out.println("0. 退出题库！");
@@ -28,22 +38,19 @@ public class QnA {
 //                int select = Integer.parseInt(input.nextLine());
 //                if (select >= 1 && select <= names.size()) {
 //                    //解决中文乱码问题
-//                    url = URLDecoder.decode(path + "/" + names.get(select - 1), "utf-8");
-//
-//                    ex.eu = new ExcelUtils(url, 0);
-//                    ex.eu.getTestData(ex.questions);
+//                    url = URLDecoder.decode(path + names.get(select - 1), "utf-8");
+//                    questionManagerService.setExcelService(url,0);
+//                    questionManagerService.getTestData();
 //                } else {
 //                    flag = false;
 //                    exitFlag = true;
 //                    UIServiceImpl.getInstance().sayGoodBye();
 //                }
 //            } else {
-////                url = ExcelUtils.class.getClassLoader().getResource(names.get(0)).getPath();
 //                //解决中文乱码问题
-//                url = URLDecoder.decode(path + "/" + names.get(0), "utf-8");
-//                ex.eu = new ExcelUtils(url, 0);
-//                System.out.println(url);
-//                ex.eu.getTestData(ex.questions);
+//                url = URLDecoder.decode(path  + names.get(0), "utf-8");
+//                questionManagerService.setExcelService(url,0);
+//                questionManagerService.getTestData();
 //            }
 //
 //
@@ -58,36 +65,34 @@ public class QnA {
 //                System.out.println("\033[m*********  7.   退出     ***********");
 //                String opt;
 //                opt = input.nextLine();
-//                double max_err = ex.eu.getMaxErrTimes(ex.questions);
+//                double max_err = questionManagerService.getMaxErrTimes();
 //
 //                if (opt == null || opt.equals("1") || opt.equals("")) {
-//                    ex.testAll();
+//                    questionManagerService.testAll();
 //                } else if (opt.equals("3")) {
 //                    System.out.println("最多错了 " + (int) max_err + " 次");
 //                    System.out.println("选择错误次数大于等于x的题目");
 //                    String times = input.nextLine();
 //                    if (times == null || times.equals("")) times = "0.0001";
-//                    ex.testError(Double.valueOf(times));
+//                    questionManagerService.testError(Double.valueOf(times));
 //                } else if (opt.equals("4")) {
-//                    ex.printAll();
+//                    questionManagerService.printAll();
 //                } else if (opt.equals("5")) {
-//                    ex.eu.showRecords();
+//                    questionManagerService.getExcelService().showRecords();
 //                } else if (opt.equals("6")) {
-//                    ex.removeErrTimes();
+//                    questionManagerService.removeErrTimes();
 //                }else if(opt.equals("2")){
-//                    ex.randomTest();
+//                    questionManagerService.randomTest();
 //                } else {
 //                    System.out.println("Bye Bye!");
 //                    exitFlag = true;
 //                }
-//                //ex.printAns();
-//
-//                FileOutputStream fos = new FileOutputStream(url);
-//                ex.eu.writeExcel(fos);
+//                //写回Excel
+//                questionManagerService.getExcelService().writeExcel(url);
 //            }
 //
 //        }
-//
-//
-//    }
+
+     }
+
 }

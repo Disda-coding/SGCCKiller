@@ -1,83 +1,22 @@
 package pojo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 //不够pojo 得优化
 
 public class Question {
 
 
+    public ArrayList<String> ops;
     private String title;
     private String answer;
     private String type;
     private double errTimes;
-
-
     private String explains;
-    public ArrayList<String> ops;
 
-
-    public Question(String title, String answer, String type, ArrayList<String> ops, String explains, double errTimes, String del) {
-        this.title = title.trim();
-        this.type = type;
-        if (this.type.equals("多选题")) {
-            String ans = answer;
-            if(del != null)
-                ans = answer.replaceAll(del, "");
-            this.answer = sortOps(ans);
-        }
-        else if(this.type.contains("是非")||this.type.contains("判断")||this.type.contains("对错")){
-            if(answer.contains("√")||answer.contains("对")||answer.contains("T")||answer.contains("t")||answer.contains("A")||answer.contains("a")||answer.contains("1")||answer.contains("正确"))
-                this.answer="T";
-            else
-                this.answer="F";
-        }
-        else
-            this.answer = answer;
-        this.explains = explains;
-        this.ops = ops;
-        this.errTimes = errTimes;
-    }
-
-    private String sortOps(String ans) {
-        char[] ch = ans.toCharArray();
-        Arrays.sort(ch);
-
-        return new String(ch);
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public double getErrTimes() {
-        return errTimes;
-    }
-    public void setErrTimes(double times){
-        this.errTimes=times;
+    public Question() {
     }
 
 
-    public String getExplains() {
-        return explains;
-    }
-    public void increaseErrTimes(){
-        this.errTimes++;
-    }
-
-    public void resetErrTimes(){
-        this.errTimes=0.0;
-    }
-
-    //要重写equals方法以及hashCode方法，才能在set集合中保证题目不重复
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -85,8 +24,7 @@ public class Question {
         if (obj instanceof Question) {
             Question anotherQuestion = (Question) obj;
             //比较题干是否相同
-            if (this.getTitle().equals(anotherQuestion.getTitle()))
-                return false;
+            return !this.getTitle().equals(anotherQuestion.getTitle());
         }
         return true;
     }
@@ -95,5 +33,53 @@ public class Question {
     @Override
     public int hashCode() {
         return this.getTitle().hashCode();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getErrTimes() {
+        return errTimes;
+    }
+
+    public void setErrTimes(double errTimes) {
+        this.errTimes = errTimes;
+    }
+
+    public String getExplains() {
+        return explains;
+    }
+
+    public void setExplains(String explains) {
+        this.explains = explains;
+    }
+
+    public ArrayList<String> getOps() {
+        return ops;
+    }
+
+    public void setOps(ArrayList<String> ops) {
+        this.ops = ops;
     }
 }

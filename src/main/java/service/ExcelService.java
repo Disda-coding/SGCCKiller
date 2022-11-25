@@ -4,7 +4,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import pojo.Question;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -18,17 +17,20 @@ public interface ExcelService {
 
     void recording(String out);
 
-    void getCellByCaseName(String caseName, int caseCellNum, int errCellNum, double opt, int styleCell, Question que);
+    void getCellByCaseName(Question que, double opt);
 
     Sheet getSheet();
 
     void setSheet(Sheet sheet);
 
+
+    public void removeErrTimes();
+
     Workbook getWorkbook();
 
     void setWorkbook(Workbook workbook);
 
-    public void writeExcel(FileOutputStream fos) throws IOException;
+    public void writeExcel(String url) throws IOException;
 
 
 }

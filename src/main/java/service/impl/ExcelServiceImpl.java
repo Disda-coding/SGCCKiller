@@ -8,6 +8,7 @@ import pojo.Configuration;
 import pojo.Question;
 import service.ConfigurationService;
 import service.ExcelService;
+import service.QuestionManagerService;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,6 +23,8 @@ import java.io.IOException;
 public class ExcelServiceImpl implements ExcelService {
     Configuration configuration;
     ConfigurationService configurationService = YamlConfigurationServiceImpl.getInstance();
+    QuestionManagerService questionManagerService = QuestionManagerServiceImpl.getInstance();
+
 
     public Sheet getSheet() {
         return sheet;
@@ -61,6 +64,19 @@ public class ExcelServiceImpl implements ExcelService {
         configuration = configurationService.getConfiguration();
     }
 
+    public void removeErrTimes(){
+        deleteColumn(sheet,configuration.getErrCell());
+        deleteColumn(sheet,configuration.getRecord());
+        int rows = sheet.getPhysicalNumberOfRows();
+        CellStyle style = workbook.createCellStyle();
+        for (int i = 0; i < rows && (sheet.getRow(i).getCell(configuration.getTitleCell()) != null); i++) {
+            Row row = sheet.getRow(i);
+            this.fillCell(row, style, configuration.getStyleCell(), (new HSSFColor.WHITE()).getIndex());
+        }
+    }
+
+
+
     /**
      * @Method getCellByCaseName
      * @Author disda
@@ -70,40 +86,39 @@ public class ExcelServiceImpl implements ExcelService {
      * @Exception
      * @Date 2021/12/3 2:35 下午
      */
-    public void getCellByCaseName(String caseName, int caseCellNum, int errCellNum, double opt, int styleCell, Question que) {
+//    String caseName, int caseCellNum, int errCellNum, double opt, int styleCell,
+    public void getCellByCaseName(Question que,double opt) {
 
         int rows = sheet.getPhysicalNumberOfRows();
         CellStyle style = workbook.createCellStyle();
         for (int i = 0; i < rows && (sheet.getRow(i).getCell(configuration.getTitleCell()) != null); i++) {
 
             Row row = sheet.getRow(i);
-            String cell = row.getCell(caseCellNum).toString(); // 2 for que
+            String cell = row.getCell(configuration.getTitleCell()).toString(); // 2 for que
 
-            if (cell.trim().equals(caseName)) {
-
+            if (cell.trim().equals(que.getTitle())) {
                 if (opt >= -1.0) {
 //                    System.out.println("recorded");
-                    double errTimes = Double.valueOf(row.getCell(errCellNum).toString()) + opt < 0 ? 0 : Double.valueOf(row.getCell(errCellNum).toString()) + opt; // 11 for que
-                    row.getCell(errCellNum).setCellValue(errTimes);
+                    double errTimes = Double.valueOf(row.getCell(configuration.getErrCell()).toString()) + opt < 0 ? 0 : Double.valueOf(row.getCell(configuration.getErrCell()).toString()) + opt; // 11 for que
+                    row.getCell(configuration.getErrCell()).setCellValue(errTimes);
                     //到时候解耦合
                     que.setErrTimes(errTimes);
                     if (errTimes <= configuration.getEasy()) {
-                        fillCell(row, style, styleCell, new HSSFColor.GOLD().getIndex());
+                        fillCell(row, style, configuration.getStyleCell(), new HSSFColor.GOLD().getIndex());
                     } else if (errTimes > configuration.getEasy() && errTimes <= configuration.getMedian()) {
-                        fillCell(row, style, styleCell, new HSSFColor.LIGHT_ORANGE().getIndex());
+                        fillCell(row, style, configuration.getStyleCell(), new HSSFColor.LIGHT_ORANGE().getIndex());
                     } else if (errTimes > configuration.getMedian() && errTimes <= configuration.getHard()) {
-                        fillCell(row, style, styleCell, new HSSFColor.ORANGE().getIndex());
+                        fillCell(row, style, configuration.getStyleCell(), new HSSFColor.ORANGE().getIndex());
                     } else if (errTimes > configuration.getHard()) {
-                        fillCell(row, style, styleCell, new HSSFColor.RED().getIndex());
+                        fillCell(row, style, configuration.getStyleCell(), new HSSFColor.RED().getIndex());
                     }
                     break;
                 } else if (opt == -2.0) {
-                    row.getCell(errCellNum).setCellValue(0.0);
+                    row.getCell(configuration.getErrCell()).setCellValue(0.0);
                     //到时候解耦合
-                    que.resetErrTimes();
-
-                    this.fillCell(row, style, styleCell, (new HSSFColor.WHITE()).getIndex());
-                    //                    删除整列
+                    questionManagerService.resetErrTimes(que);
+                    this.fillCell(row, style, configuration.getStyleCell(), (new HSSFColor.WHITE()).getIndex());
+                    //  删除整列
                     deleteColumn(sheet,configuration.getRecord());
 
                 }
@@ -111,7 +126,7 @@ public class ExcelServiceImpl implements ExcelService {
             }
         }
     }
-
+    //删掉指定column及其后面的columns
     public void deleteColumn( Sheet sheet, int columnToDelete ){
         int maxColumn = 0;
         for ( int r=0; r < sheet.getLastRowNum()+1; r++ ){
@@ -192,7 +207,8 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
 
-    public void writeExcel(FileOutputStream fos) throws IOException {
+    public void writeExcel(String url) throws IOException {
+        FileOutputStream fos = new FileOutputStream(url);
         workbook.write(fos);
     }
 

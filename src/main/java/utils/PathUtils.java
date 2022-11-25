@@ -1,5 +1,9 @@
 package utils;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringJoiner;
 
 /**
@@ -9,6 +13,18 @@ import java.util.StringJoiner;
  * @create: 2022-11-23 15:48
  */
 public class PathUtils {
+
+    public static List<String> getTestNames(){
+        String path = PathUtils.getPath();
+        File dir = new File(path);
+        String[] name = dir.list(new ExcelFilter());
+        List<String> names = Arrays.asList(name);
+        Collections.sort(names);
+        System.out.println(names);
+        return names;
+    }
+
+
     public static String getPath(){
         String path = "src/main/resources/";
         try {
