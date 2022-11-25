@@ -16,7 +16,7 @@ import java.util.Scanner;
  */
 public class UIServiceImpl implements UIService {
     // 初始化QuestionManagerService
-    static TestManagerService questionManagerService;
+    static TestManagerService testManagerService;
 
 
     private UIServiceImpl(){
@@ -28,7 +28,7 @@ public class UIServiceImpl implements UIService {
         private static final UIService INSTANCE = new UIServiceImpl();
     }
     public static UIService getInstance(){
-        questionManagerService = TestManagerServiceImpl.getInstance();
+        testManagerService = TestManagerServiceImpl.getInstance();
         return UIServiceImpl.SingleUIServiceImpl.INSTANCE;
     }
 
@@ -40,7 +40,6 @@ public class UIServiceImpl implements UIService {
             System.out.println("请选择要打开的配置文件");
             for (int i = 0; i < names.length; i++)
                 System.out.println(i + 1 + ". " + names[i]);
-//            System.out.println(0 + " 自动解析");
             int select = Integer.parseInt(input.nextLine());
             if (select >= 1 && select <= names.length) {
                 path = names[select - 1];
@@ -102,8 +101,8 @@ public class UIServiceImpl implements UIService {
                 if (select >= 1 && select <= names.size()) {
                     //解决中文乱码问题
                     url = URLDecoder.decode(path + names.get(select - 1), "utf-8");
-                    questionManagerService.setExcelService(url,0);
-                    questionManagerService.getTestData();
+                    testManagerService.setExcelService(url,0);
+                    testManagerService.getTestData();
                 } else {
                     flag = false;
                     exitFlag = true;
@@ -112,8 +111,8 @@ public class UIServiceImpl implements UIService {
             } else {
                 //解决中文乱码问题
                 url = URLDecoder.decode(path + names.get(0), "utf-8");
-                questionManagerService.setExcelService(url,0);
-                questionManagerService.getTestData();
+                testManagerService.setExcelService(url,0);
+                testManagerService.getTestData();
             }
 
             while (!exitFlag) {
@@ -127,30 +126,30 @@ public class UIServiceImpl implements UIService {
                 System.out.println("\033[m*********  7.   退出     ***********");
                 String opt;
                 opt = input.nextLine();
-                double max_err = questionManagerService.getMaxErrTimes();
+                double max_err = testManagerService.getMaxErrTimes();
 
                 if (opt == null || opt.equals("1") || opt.equals("")) {
-                    questionManagerService.testAll();
+                    testManagerService.testAll();
                 } else if (opt.equals("3")) {
                     System.out.println("最多错了 " + (int) max_err + " 次");
                     System.out.println("选择错误次数大于等于x的题目");
                     String times = input.nextLine();
                     if (times == null || times.equals("")) times = "0.0001";
-                    questionManagerService.testError(Double.valueOf(times));
+                    testManagerService.testError(Double.valueOf(times));
                 } else if (opt.equals("4")) {
-                    questionManagerService.printAll();
+                    testManagerService.printAll();
                 } else if (opt.equals("5")) {
-                    questionManagerService.getExcelService().showRecords();
+                    testManagerService.getExcelService().showRecords();
                 } else if (opt.equals("6")) {
-                    questionManagerService.removeErrTimes();
+                    testManagerService.removeErrTimes();
                 }else if(opt.equals("2")){
-                    questionManagerService.randomTest();
+                    testManagerService.randomTest();
                 } else {
                     System.out.println("Bye Bye!");
                     exitFlag = true;
                 }
                 //写回Excel
-                questionManagerService.getExcelService().writeExcel(url);
+                testManagerService.getExcelService().writeExcel(url);
             }
 
         }

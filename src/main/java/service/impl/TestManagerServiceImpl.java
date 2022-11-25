@@ -41,7 +41,7 @@ public class TestManagerServiceImpl implements TestManagerService {
         this.cursor = 1;
 //        this.question = new ArrayList();
         ConfigurationService configurationService = YamlConfigurationServiceImpl.getInstance();
-
+        //!!!!
         configuration = configurationService.getConfiguration();
     }
 

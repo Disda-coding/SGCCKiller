@@ -22,6 +22,7 @@ import java.util.Map;
  */
 public class YamlConfigurationServiceImpl implements ConfigurationService {
     final Yaml yaml = new Yaml();
+    Configuration configuration;
     ModelMapper modelMapper = new ModelMapper();
     FileInputStream fileInputStream;
     UIService uiService = UIServiceImpl.getInstance();
@@ -46,7 +47,7 @@ public class YamlConfigurationServiceImpl implements ConfigurationService {
 
 
     public Configuration getConfiguration(){
-
+        if (configuration !=null) return configuration;
         String url = getConfigPath();
 
         Map<String, Object> map = null;
@@ -61,7 +62,7 @@ public class YamlConfigurationServiceImpl implements ConfigurationService {
         Map para = (Map<String, Object>) map.get("parameters");
         ymlMap.putAll(attr);
         ymlMap.putAll(para);
-        Configuration configuration  = modelMapper.map(ymlMap,Configuration.class);
+         this.configuration  = modelMapper.map(ymlMap,Configuration.class);
 //        System.out.println("attr:"+ymlMap);
 //        System.out.println(configuration);
         return configuration;

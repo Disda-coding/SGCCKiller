@@ -8,7 +8,6 @@ import pojo.Configuration;
 import pojo.Question;
 import service.ConfigurationService;
 import service.ExcelService;
-import service.QuestionManagerService;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,8 +22,6 @@ import java.io.IOException;
 public class ExcelServiceImpl implements ExcelService {
     Configuration configuration;
     ConfigurationService configurationService = YamlConfigurationServiceImpl.getInstance();
-    QuestionManagerService questionManagerService = QuestionManagerServiceImpl.getInstance();
-
 
     public Sheet getSheet() {
         return sheet;
@@ -61,6 +58,7 @@ public class ExcelServiceImpl implements ExcelService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //!!!
         configuration = configurationService.getConfiguration();
     }
 
