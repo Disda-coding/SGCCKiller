@@ -37,6 +37,9 @@ public class TestManagerServiceImpl implements TestManagerService {
         return excelService;
     }
 
+    public void resetCursor(){
+        this.cursor=1;
+    }
     private TestManagerServiceImpl() {
         this.cursor = 1;
 //        this.question = new ArrayList();
@@ -244,12 +247,14 @@ public class TestManagerServiceImpl implements TestManagerService {
         else
             indexx = CommonUtils.randomSeq(beg,questions.size());
 //
+        int k = 1;
         for (int i:indexx){
             Question que = questions.get(i - 1);
             if((que.getType().equals("是非题") || que.getType().equals("判断题"))&configuration.getIncludes_judge()==0) continue;
             if (que.getErrTimes() < times) continue;
             all++;
-            System.out.print(+i + ".\033[34m[" + que.getType() + "]\033[m");
+            System.out.print(+k + ".\033[34m[" + que.getType() + "]\033[m");
+            k++;
             // 太长解决方案
             CommonUtils.printLongStuff(que.getTitle(), configuration.getLinesize());
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
@@ -396,7 +401,7 @@ public class TestManagerServiceImpl implements TestManagerService {
         String in = input.nextLine();
         int beg = configuration.getSample();
         if(in.equals("")){
-            System.out.println("默认抽取 "+configuration.getSample()+" 道题\ndfadfd");
+            System.out.println("默认抽取 "+configuration.getSample()+" 道题\n");
         }else if(!CommonUtils.isNumeric(in)){
             System.out.println("请输入数字");
         }else{

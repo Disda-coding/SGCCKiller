@@ -97,4 +97,5 @@ public interface TestManagerService {
     void removeErrTimes();
     public void randomTest() throws InterruptedException;
     public ExcelService getExcelService();
+    public void resetCursor();
 }

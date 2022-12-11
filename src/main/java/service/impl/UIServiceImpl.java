@@ -19,20 +19,16 @@ public class UIServiceImpl implements UIService {
     static TestManagerService testManagerService;
 
 
-    private UIServiceImpl(){
+    private UIServiceImpl() {
 
     }
 
-    private static class SingleUIServiceImpl{
-
-        private static final UIService INSTANCE = new UIServiceImpl();
-    }
-    public static UIService getInstance(){
+    public static UIService getInstance() {
         testManagerService = TestManagerServiceImpl.getInstance();
         return UIServiceImpl.SingleUIServiceImpl.INSTANCE;
     }
 
-    public String selectConfigPath(String[] names){
+    public String selectConfigPath(String[] names) {
         String path = names[0];
         Scanner input = new Scanner(System.in);
         boolean flag = true;
@@ -54,7 +50,7 @@ public class UIServiceImpl implements UIService {
         System.out.println("Author: disda-coding.github.io/");
     }
 
-    public void sayGoodBye(){
+    public void sayGoodBye() {
         String bye =
                 "                       _oo0oo_\n" +
                         "                      o8888888o\n" +
@@ -80,14 +76,13 @@ public class UIServiceImpl implements UIService {
                         "\n" +
                         "               佛祖保佑         永无BUG\n" +
                         "\n" +
-                        "\n"
-                ;
+                        "\n";
         System.out.println(bye);
     }
 
     @Override
-    public void mainMenu( String path, List<String> names) throws InterruptedException, IOException {
-        String url = URLDecoder.decode(path  + names.get(0), "utf-8");
+    public void mainMenu(String path, List<String> names) throws InterruptedException, IOException {
+        String url = URLDecoder.decode(path + names.get(0), "utf-8");
         Scanner input = new Scanner(System.in);
         boolean flag = true;
         while (flag) {
@@ -101,7 +96,7 @@ public class UIServiceImpl implements UIService {
                 if (select >= 1 && select <= names.size()) {
                     //解决中文乱码问题
                     url = URLDecoder.decode(path + names.get(select - 1), "utf-8");
-                    testManagerService.setExcelService(url,0);
+                    testManagerService.setExcelService(url, 0);
                     testManagerService.getTestData();
                 } else {
                     flag = false;
@@ -111,7 +106,7 @@ public class UIServiceImpl implements UIService {
             } else {
                 //解决中文乱码问题
                 url = URLDecoder.decode(path + names.get(0), "utf-8");
-                testManagerService.setExcelService(url,0);
+                testManagerService.setExcelService(url, 0);
                 testManagerService.getTestData();
             }
 
@@ -142,10 +137,11 @@ public class UIServiceImpl implements UIService {
                     testManagerService.getExcelService().showRecords();
                 } else if (opt.equals("6")) {
                     testManagerService.removeErrTimes();
-                }else if(opt.equals("2")){
+                } else if (opt.equals("2")) {
                     testManagerService.randomTest();
                 } else {
                     System.out.println("Bye Bye!");
+                    testManagerService.resetCursor();
                     exitFlag = true;
                 }
                 //写回Excel
@@ -154,6 +150,11 @@ public class UIServiceImpl implements UIService {
 
         }
 
+    }
+
+    private static class SingleUIServiceImpl {
+
+        private static final UIService INSTANCE = new UIServiceImpl();
     }
 
 }
