@@ -47,7 +47,9 @@ public class YamlConfigurationServiceImpl implements ConfigurationService {
 
 
     public Configuration getConfiguration(){
-        if (configuration !=null) return configuration;
+        if (configuration !=null) {
+            return configuration;
+        }
         String url = getConfigPath();
 
         Map<String, Object> map = null;

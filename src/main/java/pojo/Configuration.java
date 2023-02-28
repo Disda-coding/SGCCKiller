@@ -7,7 +7,7 @@ package pojo;
  * @create: 2022-11-22 16:04
  */
 public class Configuration {
-    int styleCell, enable_explain, titleCell, typeCell, ans,
+    int styleCell, enable_explain, titleCell, quesType, ans,
             optBeg, optEnd, explain, errCell, linesize, easy,
             median, hard, qStart, calTime, isOrder, record,
             sample, includes_judge, memory;
@@ -22,7 +22,7 @@ public class Configuration {
                 "styleCell=" + styleCell +
                 ", enable_explain=" + enable_explain +
                 ", titleCell=" + titleCell +
-                ", typeCell=" + typeCell +
+                ", quesType=" + quesType +
                 ", ans=" + ans +
                 ", optBeg=" + optBeg +
                 ", optEnd=" + optEnd +
@@ -72,8 +72,8 @@ public class Configuration {
         this.titleCell = titleCell;
     }
 
-    public void setTypeCell(int typeCell) {
-        this.typeCell = typeCell;
+    public void setQuesType(int quesType) {
+        this.quesType = quesType;
     }
 
     public void setAns(int ans) {
@@ -146,7 +146,7 @@ public class Configuration {
         this.styleCell = styleCell;
         this.enable_explain = enable_explain;
         this.titleCell = titleCell;
-        this.typeCell = typeCell;
+        this.quesType = typeCell;
         this.ans = ans;
         this.optBeg = optBeg;
         this.optEnd = optEnd;
@@ -177,8 +177,8 @@ public class Configuration {
         return titleCell;
     }
 
-    public int getTypeCell() {
-        return typeCell;
+    public int getQuesType() {
+        return quesType;
     }
 
     public int getAns() {

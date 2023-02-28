@@ -87,8 +87,9 @@ public class TestManagerServiceImpl implements TestManagerService {
             }
 
             String queType = "";
-            if (row.getCell(configuration.getTypeCell()) != null && !row.getCell(configuration.getTypeCell()).toString().equals(""))
-                queType = row.getCell(configuration.getTypeCell()).toString();
+            if (row.getCell(configuration.getQuesType()) != null && !row.getCell(configuration.getQuesType()).toString().equals("")) {
+                queType = row.getCell(configuration.getQuesType()).toString();
+            }
             ArrayList<String> ops = new ArrayList<>();
 
             String[] opsInExcel = new String[configuration.getOptEnd() - configuration.getOptBeg() + 1];
@@ -253,8 +254,13 @@ public class TestManagerServiceImpl implements TestManagerService {
             if((que.getType().equals("是非题") || que.getType().equals("判断题"))&configuration.getIncludes_judge()==0) continue;
             if (que.getErrTimes() < times) continue;
             all++;
-            System.out.print(+k + ".\033[34m[" + que.getType() + "]\033[m");
-            k++;
+            if(random){
+                System.out.print(+k + ".\033[34m[" + que.getType() + "]\033[m");
+                k++;
+            }else {
+                System.out.print(+i + ".\033[34m[" + que.getType() + "]\033[m");
+            }
+
             // 太长解决方案
             CommonUtils.printLongStuff(que.getTitle(), configuration.getLinesize());
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
@@ -378,7 +384,7 @@ public class TestManagerServiceImpl implements TestManagerService {
         for (int i = 1; i <= size; i++) {
             Question que = questions.get(i);
             System.out.print(i + ". ");
-            CommonUtils.printLongStuff(que.getTitle(), configuration.getLinesize());
+            System.out.println(que.getTitle());
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
                 System.out.println(seq[j] + ": " + que.ops.get(j));
             }

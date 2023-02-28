@@ -51,14 +51,16 @@ public class QuestionManagerServiceImpl implements QuestionManagerService {
         question.setType(type);
         if(type.equals("多选题")){
             String ans = answer;
-            if(del != null)
+            if(del != null) {
                 ans = answer.replaceAll(del, "");
+            }
             question.setAnswer(sortOps(ans));
         }else if(type.contains("是非")||type.contains("判断")||type.contains("对错")){
-            if(answer.contains("√")||answer.contains("对")||answer.contains("T")||answer.contains("t")||answer.contains("A")||answer.contains("a")||answer.contains("1")||answer.contains("正确"))
+            if(answer.contains("√")||answer.contains("对")||answer.contains("T")||answer.contains("t")||answer.contains("A")||answer.contains("a")||answer.contains("1")||answer.contains("正确")) {
                 question.setAnswer("T");
-            else
+            } else {
                 question.setAnswer("F");
+            }
         }
         else {
             question.setAnswer(answer);
