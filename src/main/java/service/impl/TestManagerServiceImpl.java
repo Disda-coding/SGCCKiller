@@ -358,7 +358,6 @@ public class TestManagerServiceImpl implements TestManagerService {
             setDefaultBeg(end+1>size?1:end+1);
         } else if (nums.length == 1) {
             if (nums[0].equals("")) {
-
                 beg = getAndSetDefaultBeg(size);
                 int newBeg = beg+configuration.getSample();
                 end = newBeg-1>size?size:newBeg-1;
