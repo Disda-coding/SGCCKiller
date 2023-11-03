@@ -34,5 +34,7 @@ public interface ExcelService {
 
     public void writeExcel(String url) throws IOException;
 
+    public void setDate(int index);
+
 
 }

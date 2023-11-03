@@ -120,6 +120,13 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     @Override
+    public void setDate(int index){
+        int date = configuration.getDate();
+        Row row = sheet.getRow(index);
+        row.getCell(date).setCellValue(System.currentTimeMillis());
+    }
+
+    @Override
     public void getCellByIndex(int index, double opt) {
         int qStart = configuration.getqStart();
         CellStyle style = workbook.createCellStyle();
@@ -134,19 +141,9 @@ public class ExcelServiceImpl implements ExcelService {
             }
             row.getCell(configuration.getErrCell()).setCellValue(errTimes);
             //到时候解耦合
-//            que.setErrTimes(errTimes);
-            if (errTimes <= configuration.getEasy()) {
-                fillCell(row, style, configuration.getStyleCell(), new HSSFColor.GOLD().getIndex());
-            } else if (errTimes > configuration.getEasy() && errTimes <= configuration.getMedian()) {
-                fillCell(row, style, configuration.getStyleCell(), new HSSFColor.LIGHT_ORANGE().getIndex());
-            } else if (errTimes > configuration.getMedian() && errTimes <= configuration.getHard()) {
-                fillCell(row, style, configuration.getStyleCell(), new HSSFColor.ORANGE().getIndex());
-            } else if (errTimes > configuration.getHard()) {
-                fillCell(row, style, configuration.getStyleCell(), new HSSFColor.RED().getIndex());
-            }
+
         } else if (opt == -2.0) {
             row.getCell(configuration.getErrCell()).setCellValue(0.0);
-            this.fillCell(row, style, configuration.getStyleCell(), (new HSSFColor.WHITE()).getIndex());
 
         }
     }
@@ -158,21 +155,25 @@ public class ExcelServiceImpl implements ExcelService {
             Row row = sheet.getRow( r );
 
             // if no row exists here; then nothing to do; next!
-            if ( row == null )
+            if ( row == null ) {
                 continue;
+            }
 
             // if the row doesn't have this many columns then we are good; next!
             int lastColumn = row.getLastCellNum();
-            if ( lastColumn > maxColumn )
+            if ( lastColumn > maxColumn ) {
                 maxColumn = lastColumn;
+            }
 
-            if ( lastColumn < columnToDelete )
+            if ( lastColumn < columnToDelete ) {
                 continue;
+            }
 
             for ( int x=columnToDelete+1; x < lastColumn + 1; x++ ){
                 Cell oldCell    = row.getCell(x-1);
-                if ( oldCell != null )
+                if ( oldCell != null ) {
                     row.removeCell( oldCell );
+                }
 
                 Cell nextCell   = row.getCell( x );
                 if ( nextCell != null ){

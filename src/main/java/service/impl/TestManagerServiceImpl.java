@@ -37,6 +37,13 @@ public class TestManagerServiceImpl implements TestManagerService {
         return excelService;
     }
 
+    @Override
+    public void testByIntelligence(double[] maxVariable) throws InterruptedException {
+        int date = configuration.getDate();
+        test(1, questions.size(), 0.0,false,maxVariable);
+
+    }
+
     public void resetCursor(){
         this.cursor=1;
     }
@@ -59,14 +66,16 @@ public class TestManagerServiceImpl implements TestManagerService {
 
     /**
      * 加载题库内的题目传入Question对象数组
+     *
+     * @return
      */
-    public void getTestData() {
+    public double[] getTestData() {
         questions = new ArrayList<>();
         Sheet sheet = excelService.getSheet();
-        double max_err = 0;
         int rows = sheet.getPhysicalNumberOfRows();
-
+        double maxErrors=0.0,maxDate=0.0;
         for (int i = configuration.getqStart(); i <= rows && (sheet.getRow(i) != null && sheet.getRow(i).getCell(configuration.getTitleCell()) != null && !sheet.getRow(i).getCell(configuration.getTitleCell()).toString().trim().equals("")); i++) {
+
             Row row = sheet.getRow(i);
             String queTitle = "";
             if (row.getCell(configuration.getTitleCell()) != null && !row.getCell(configuration.getTitleCell()).toString().equals(""))
@@ -85,7 +94,15 @@ public class TestManagerServiceImpl implements TestManagerService {
             } else {
                 errTimes = Double.valueOf(row.getCell(configuration.getErrCell()).toString());
             }
-
+            maxErrors = errTimes > maxErrors?errTimes:maxErrors;
+            // new!!
+            double datetime = 0.0;
+            if (row.getCell(configuration.getDate()) == null || row.getCell(configuration.getDate()).toString().equals("")) {
+                row.createCell(configuration.getDate()).setCellValue("0");
+            } else {
+                datetime = Double.valueOf(row.getCell(configuration.getDate()).toString());
+            }
+            maxDate = datetime>maxDate?datetime:maxDate;
             String queType = "";
             if (row.getCell(configuration.getQuesType()) != null && !row.getCell(configuration.getQuesType()).toString().equals("")) {
                 queType = row.getCell(configuration.getQuesType()).toString();
@@ -108,26 +125,29 @@ public class TestManagerServiceImpl implements TestManagerService {
                 continue;
             else {
                 if (configuration.getIsOrder() == 1 || queType.equals("判断题")) {
-                    questions.add(questionManagerService.createQuestion(queTitle, queAns, queType, ops, explains, errTimes, configuration.getDel()));
+                    questions.add(questionManagerService.createQuestion(queTitle, queAns, queType, ops, explains, errTimes, datetime,maxDate,configuration.getDel()));
                 } else {
-                    questions.add(mixOrder(queTitle, queAns, queType, ops, explains, errTimes, configuration.getDel()));
+                    questions.add(mixOrder(queTitle, queAns, queType, ops, explains, errTimes,datetime,maxDate,configuration.getDel()));
                 }
             }
         }
+        return new double[] {maxErrors,maxDate};
     }
 
     /**
      * 将选项打乱顺序
+     *
      * @param queTitle
      * @param queAns
      * @param queType
      * @param ops
      * @param explains
-     * @param errTimes
+     * @param datetime
+     * @param maxDate
      * @param del
      * @return
      */
-    public Question mixOrder(String queTitle, String queAns, String queType, ArrayList<String> ops, String explains, double errTimes, String del) {
+    public Question mixOrder(String queTitle, String queAns, String queType, ArrayList<String> ops, String explains, double errTimes, double datetime, double maxDate,String del) {
         StringBuilder sb = new StringBuilder(queAns);
         if (ops.size() != 0) {
             sb = new StringBuilder();
@@ -154,7 +174,7 @@ public class TestManagerServiceImpl implements TestManagerService {
                 }
             }
         }
-        return questionManagerService.createQuestion(queTitle, sb.toString(), queType, ops, explains, errTimes, del);
+        return questionManagerService.createQuestion(queTitle, sb.toString(), queType, ops, explains, errTimes, datetime,maxDate , del);
     }
 
 
@@ -233,11 +253,11 @@ public class TestManagerServiceImpl implements TestManagerService {
      */
     public void testError(Double times) throws InterruptedException {
         printTotal(times);
-        test(1, questions.size(), times,false);
+        test(1, questions.size(), times,false,null);
     }
 
 
-    public void test(int beg, int end, Double times,boolean random) throws InterruptedException {
+    public void test(int beg, int end, Double times, boolean random, double[] maxVariable) throws InterruptedException {
         long sTime = System.currentTimeMillis();
         Scanner input = new Scanner(System.in);
         int all = 0;
@@ -253,12 +273,20 @@ public class TestManagerServiceImpl implements TestManagerService {
             Question que = questions.get(i - 1);
             if((que.getType().equals("是非题") || que.getType().equals("判断题"))&configuration.getIncludes_judge()==0) continue;
             if (que.getErrTimes() < times) continue;
+            if (maxVariable != null){
+                double queCoef=(0.7*(que.getErrTimes()/maxVariable[0])+0.3*(que.getDate()/maxVariable[1]));
+                que.setCoef(queCoef);
+                if (queCoef<0.7) {
+                    continue;
+                }
+            }
             all++;
             if(random){
                 System.out.print(+k + ".\033[34m[" + que.getType() + "]\033[m");
                 k++;
             }else {
                 System.out.print(+i + ".\033[34m[" + que.getType() + "]\033[m");
+                System.out.print(".\033[33m[系数为{"+que.getCoef()+'}'+"]\033[m");
             }
 
             // 太长解决方案
@@ -316,6 +344,7 @@ public class TestManagerServiceImpl implements TestManagerService {
 //                excelService.getCellByCaseName(que, 1.0);
 //                que.increaseErrTimes();
             }
+            excelService.setDate(i);
         }
         long eTime = System.currentTimeMillis();
         if(all == 0){
@@ -361,7 +390,7 @@ public class TestManagerServiceImpl implements TestManagerService {
                 beg = getAndSetDefaultBeg(size);
                 int newBeg = beg+configuration.getSample();
                 end = newBeg-1>size?size:newBeg-1;
-                test(beg, end, 0.0,false);
+                test(beg, end, 0.0,false,null);
                 return;
             } else if (CommonUtils.isNumeric(nums[0])){
                 int tmp = Integer.valueOf(nums[0]);
@@ -373,7 +402,7 @@ public class TestManagerServiceImpl implements TestManagerService {
             }
 
         }
-        test(beg, end, 0.0,false);
+        test(beg, end, 0.0,false,null);
 
     }
 
@@ -395,6 +424,7 @@ public class TestManagerServiceImpl implements TestManagerService {
         for (int i = 0; i < questions.size(); i++) {
             Question que = questions.get(i);
             questionManagerService.resetErrTimes(que);
+            questionManagerService.resetDate(que);
         }
         excelService.removeErrTimes();
         System.out.println("已重置！！！");
@@ -413,7 +443,7 @@ public class TestManagerServiceImpl implements TestManagerService {
             beg = Integer.valueOf(in)<=0?configuration.getSample():Integer.valueOf(in);
             System.out.println("抽取 "+beg+" 道题\n");
         }
-        test(beg, beg, 0.0,true);
+        test(beg, beg, 0.0,true,null);
     }
 
 }

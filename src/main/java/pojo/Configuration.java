@@ -7,13 +7,205 @@ package pojo;
  * @create: 2022-11-22 16:04
  */
 public class Configuration {
-    int styleCell, enable_explain, titleCell, quesType, ans,
+    int styleCell, enable_explain, titleCell, quesType, ans, composite, date,
             optBeg, optEnd, explain, errCell, linesize, easy,
             median, hard, qStart, calTime, isOrder, record,
             sample, includes_judge, memory;
+    double ratio;
 
-    public String getDel() {
-        return del;
+    public double getCoef() {
+        return coef;
+    }
+
+    public void setCoef(double coef) {
+        this.coef = coef;
+    }
+
+    double coef;
+    String del;
+
+    public double getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(double ratio) {
+        this.ratio = ratio;
+    }
+
+    public int getStyleCell() {
+        return styleCell;
+    }
+
+    public void setStyleCell(int styleCell) {
+        this.styleCell = styleCell;
+    }
+
+    public int getEnable_explain() {
+        return enable_explain;
+    }
+
+    public void setEnable_explain(int enable_explain) {
+        this.enable_explain = enable_explain;
+    }
+
+    public int getTitleCell() {
+        return titleCell;
+    }
+
+    public void setTitleCell(int titleCell) {
+        this.titleCell = titleCell;
+    }
+
+    public int getQuesType() {
+        return quesType;
+    }
+
+    public void setQuesType(int quesType) {
+        this.quesType = quesType;
+    }
+
+    public int getAns() {
+        return ans;
+    }
+
+    public void setAns(int ans) {
+        this.ans = ans;
+    }
+
+    public int getComposite() {
+        return composite;
+    }
+
+    public void setComposite(int composite) {
+        this.composite = composite;
+    }
+
+    public int getDate() {
+        return date;
+    }
+
+    public void setDate(int date) {
+        this.date = date;
+    }
+
+    public int getOptBeg() {
+        return optBeg;
+    }
+
+    public void setOptBeg(int optBeg) {
+        this.optBeg = optBeg;
+    }
+
+    public int getOptEnd() {
+        return optEnd;
+    }
+
+    public void setOptEnd(int optEnd) {
+        this.optEnd = optEnd;
+    }
+
+    public int getExplain() {
+        return explain;
+    }
+
+    public void setExplain(int explain) {
+        this.explain = explain;
+    }
+
+    public int getErrCell() {
+        return errCell;
+    }
+
+    public void setErrCell(int errCell) {
+        this.errCell = errCell;
+    }
+
+    public int getLinesize() {
+        return linesize;
+    }
+
+    public void setLinesize(int linesize) {
+        this.linesize = linesize;
+    }
+
+    public int getEasy() {
+        return easy;
+    }
+
+    public void setEasy(int easy) {
+        this.easy = easy;
+    }
+
+    public int getMedian() {
+        return median;
+    }
+
+    public void setMedian(int median) {
+        this.median = median;
+    }
+
+    public int getHard() {
+        return hard;
+    }
+
+    public void setHard(int hard) {
+        this.hard = hard;
+    }
+
+    public int getqStart() {
+        return qStart;
+    }
+
+    public void setqStart(int qStart) {
+        this.qStart = qStart;
+    }
+
+    public int getCalTime() {
+        return calTime;
+    }
+
+    public void setCalTime(int calTime) {
+        this.calTime = calTime;
+    }
+
+    public int getIsOrder() {
+        return isOrder;
+    }
+
+    public void setIsOrder(int isOrder) {
+        this.isOrder = isOrder;
+    }
+
+    public int getRecord() {
+        return record;
+    }
+
+    public void setRecord(int record) {
+        this.record = record;
+    }
+
+    public int getSample() {
+        return sample;
+    }
+
+    public void setSample(int sample) {
+        this.sample = sample;
+    }
+
+    public int getIncludes_judge() {
+        return includes_judge;
+    }
+
+    public void setIncludes_judge(int includes_judge) {
+        this.includes_judge = includes_judge;
+    }
+
+    public int getMemory() {
+        return memory;
+    }
+
+    public void setMemory(int memory) {
+        this.memory = memory;
     }
 
     @Override
@@ -24,6 +216,8 @@ public class Configuration {
                 ", titleCell=" + titleCell +
                 ", quesType=" + quesType +
                 ", ans=" + ans +
+                ", composite=" + composite +
+                ", date=" + date +
                 ", optBeg=" + optBeg +
                 ", optEnd=" + optEnd +
                 ", explain=" + explain +
@@ -39,210 +233,15 @@ public class Configuration {
                 ", sample=" + sample +
                 ", includes_judge=" + includes_judge +
                 ", memory=" + memory +
-                ", del='" + del + '\'' +
-                ", ratio=" + ratio +
                 '}';
+    }
+
+
+    public String getDel() {
+        return del;
     }
 
     public void setDel(String del) {
         this.del = del;
     }
-
-    public double getRatio() {
-        return ratio;
-    }
-
-    public void setRatio(double ratio) {
-        this.ratio = ratio;
-    }
-
-    String del;
-
-    double ratio;
-
-    public void setStyleCell(int styleCell) {
-        this.styleCell = styleCell;
-    }
-
-    public void setEnable_explain(int enable_explain) {
-        this.enable_explain = enable_explain;
-    }
-
-    public void setTitleCell(int titleCell) {
-        this.titleCell = titleCell;
-    }
-
-    public void setQuesType(int quesType) {
-        this.quesType = quesType;
-    }
-
-    public void setAns(int ans) {
-        this.ans = ans;
-    }
-
-    public void setOptBeg(int optBeg) {
-        this.optBeg = optBeg;
-    }
-
-    public void setOptEnd(int optEnd) {
-        this.optEnd = optEnd;
-    }
-
-    public void setExplain(int explain) {
-        this.explain = explain;
-    }
-
-    public void setErrCell(int errCell) {
-        this.errCell = errCell;
-    }
-
-    public void setLinesize(int linesize) {
-        this.linesize = linesize;
-    }
-
-    public void setEasy(int easy) {
-        this.easy = easy;
-    }
-
-    public void setMedian(int median) {
-        this.median = median;
-    }
-
-    public void setHard(int hard) {
-        this.hard = hard;
-    }
-
-    public void setqStart(int qStart) {
-        this.qStart = qStart;
-    }
-
-    public void setCalTime(int calTime) {
-        this.calTime = calTime;
-    }
-
-    public void setIsOrder(int isOrder) {
-        this.isOrder = isOrder;
-    }
-
-    public void setRecord(int record) {
-        this.record = record;
-    }
-
-    public void setSample(int sample) {
-        this.sample = sample;
-    }
-
-    public void setIncludes_judge(int includes_judge) {
-        this.includes_judge = includes_judge;
-    }
-
-    public void setMemory(int memory) {
-        this.memory = memory;
-    }
-
-
-    public Configuration(){}
-    public Configuration(int styleCell, int enable_explain, int titleCell, int typeCell, int ans, int optBeg, int optEnd, int explain, int errCell, int linesize, int easy, int median, int hard, int qStart, int calTime, int isOrder, int record, int sample, int includes_judge, int memory) {
-        this.styleCell = styleCell;
-        this.enable_explain = enable_explain;
-        this.titleCell = titleCell;
-        this.quesType = typeCell;
-        this.ans = ans;
-        this.optBeg = optBeg;
-        this.optEnd = optEnd;
-        this.explain = explain;
-        this.errCell = errCell;
-        this.linesize = linesize;
-        this.easy = easy;
-        this.median = median;
-        this.hard = hard;
-        this.qStart = qStart;
-        this.calTime = calTime;
-        this.isOrder = isOrder;
-        this.record = record;
-        this.sample = sample;
-        this.includes_judge = includes_judge;
-        this.memory = memory;
-    }
-
-    public int getStyleCell() {
-        return styleCell;
-    }
-
-    public int getEnable_explain() {
-        return enable_explain;
-    }
-
-    public int getTitleCell() {
-        return titleCell;
-    }
-
-    public int getQuesType() {
-        return quesType;
-    }
-
-    public int getAns() {
-        return ans;
-    }
-
-    public int getOptBeg() {
-        return optBeg;
-    }
-
-    public int getOptEnd() {
-        return optEnd;
-    }
-
-    public int getExplain() {
-        return explain;
-    }
-
-    public int getErrCell() {
-        return errCell;
-    }
-
-    public int getLinesize() {
-        return linesize;
-    }
-
-    public int getEasy() {
-        return easy;
-    }
-
-    public int getMedian() {
-        return median;
-    }
-
-    public int getHard() {
-        return hard;
-    }
-
-    public int getqStart() {
-        return qStart;
-    }
-
-    public int getCalTime() {
-        return calTime;
-    }
-
-    public int getIsOrder() {
-        return isOrder;
-    }
-
-    public int getRecord() {
-        return record;
-    }
-
-    public int getSample() {
-        return sample;
-    }
-
-    public int getIncludes_judge() {
-        return includes_judge;
-    }
-
-    public int getMemory() {
-        return memory;
-    }
-
 }

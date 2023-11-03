@@ -55,8 +55,9 @@ public interface TestManagerService {
     /**
      * 加载题库内的题目传入Question对象数组
      *
+     * @return
      */
-    void getTestData();
+    double[] getTestData();
 
     /**
      * 将选项打乱顺序
@@ -67,15 +68,17 @@ public interface TestManagerService {
      * @param ops
      * @param explains
      * @param errTimes
+     * @param datetime
      * @param del
      * @return
      */
-    Question mixOrder(String queTitle, String queAns, String queType, ArrayList<String> ops, String explains, double errTimes, String del);
+    Question mixOrder(String queTitle, String queAns, String queType, ArrayList<String> ops, String explains, double errTimes,double datetime,double maxDate, String del);
 
     void printTotal(Double times);
 
 
     void printExplains(Question que);
+
     /**
      * @Method testError
      * @Author disda
@@ -84,18 +87,23 @@ public interface TestManagerService {
      * @Exception
      * @Date 2021/12/3 2:32 下午
      */
-    public void testError(Double times) throws InterruptedException ;
+    public void testError(Double times) throws InterruptedException;
 
-        void setExcelService(String filePath, int index);
+    void setExcelService(String filePath, int index);
 
     void printAll();
 
-    void test(int beg, int end, Double times, boolean random) throws InterruptedException;
+    void test(int beg, int end, Double times, boolean random,double[] maxVariablemaxVariable) throws InterruptedException;
 
     void testAll() throws InterruptedException;
 
     void removeErrTimes();
+
     public void randomTest() throws InterruptedException;
+
     public ExcelService getExcelService();
+
     public void resetCursor();
+
+    void testByIntelligence(double[] maxVariable) throws InterruptedException;
 }

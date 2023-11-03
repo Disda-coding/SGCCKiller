@@ -13,6 +13,26 @@ public class Question {
     private double errTimes;
     private String explains;
 
+    private double date;
+
+    private double coef;
+
+    public double getDate() {
+        return date;
+    }
+
+    public void setDate(double date) {
+        this.date = date;
+    }
+
+    public double getCoef() {
+        return coef;
+    }
+
+    public void setCoef(double coef) {
+        this.coef = coef;
+    }
+
     public Question() {
     }
 

@@ -93,6 +93,7 @@ public class UIServiceImpl implements UIService {
     public void mainMenu(String path, List<String> names) throws InterruptedException, IOException {
         String url = URLDecoder.decode(path + names.get(0), "utf-8");
         Scanner input = new Scanner(System.in);
+        double[] maxDouble = new double[2];
         boolean flag = true;
         while (flag) {
             boolean exitFlag = false;
@@ -106,7 +107,7 @@ public class UIServiceImpl implements UIService {
                     //解决中文乱码问题
                     url = URLDecoder.decode(path + names.get(select - 1), "utf-8");
                     testManagerService.setExcelService(url, 0);
-                    testManagerService.getTestData();
+                    maxDouble = testManagerService.getTestData();
                 } else {
                     flag = false;
                     exitFlag = true;
@@ -124,27 +125,34 @@ public class UIServiceImpl implements UIService {
                 System.out.println("\033[31m*********  1.测试全部题目  **********");
                 System.out.println("\033[32m********   2. 随机抽样     *********");
                 System.out.println("\033[33m*********  3.测试错误题目  **********");
-                System.out.println("\033[34m********   4.显示题目与答案  ********");
-                System.out.println("\033[35m*********  5.查看历史得分  **********");
-                System.out.println("\033[36m********   6.  重置题库   ***********");
-                System.out.println("\033[m*********  7.   退出     ***********");
+                System.out.println("\033[34m*********  4.智能模式测试  **********");
+                System.out.println("\033[35m********   5.显示题目与答案  ********");
+                System.out.println("\033[36m*********  6.查看历史得分  **********");
+                System.out.println("\033[37m********   7.  重置题库   ***********");
+                System.out.println("\033[m*********  8.   退出     ***********");
                 String opt;
                 opt = input.nextLine();
                 double max_err = testManagerService.getMaxErrTimes();
 
                 if (opt == null || opt.equals("1") || opt.equals("")) {
                     testManagerService.testAll();
+                } else if (opt.equals("4")) {
+                    System.out.println(11);
+                    testManagerService.
+                            testByIntelligence(maxDouble);
                 } else if (opt.equals("3")) {
                     System.out.println("最多错了 " + (int) max_err + " 次");
                     System.out.println("选择错误次数大于等于x的题目");
                     String times = input.nextLine();
-                    if (times == null || times.equals("")) times = "0.0001";
+                    if (times == null || times.equals("")) {
+                        times = "0.0001";
+                    }
                     testManagerService.testError(Double.valueOf(times));
-                } else if (opt.equals("4")) {
-                    testManagerService.printAll();
                 } else if (opt.equals("5")) {
-                    testManagerService.getExcelService().showRecords();
+                    testManagerService.printAll();
                 } else if (opt.equals("6")) {
+                    testManagerService.getExcelService().showRecords();
+                } else if (opt.equals("7")) {
                     testManagerService.removeErrTimes();
                 } else if (opt.equals("2")) {
                     testManagerService.randomTest();

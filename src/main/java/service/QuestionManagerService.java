@@ -11,6 +11,7 @@ public interface QuestionManagerService {
 
     String sortOps( String ans);
 
-    Question createQuestion(String title, String answer, String type, ArrayList<String> ops, String explains, double errTimes, String del);
+    Question createQuestion(String title, String answer, String type, ArrayList<String> ops, String explains, double errTimes,double datetime,double maxDate, String del);
 
+    void resetDate(Question que);
 }

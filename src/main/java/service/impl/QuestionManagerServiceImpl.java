@@ -45,7 +45,7 @@ public class QuestionManagerServiceImpl implements QuestionManagerService {
     }
 
     @Override
-    public Question createQuestion(String title, String answer, String type, ArrayList<String> ops, String explains, double errTimes, String del) {
+    public Question createQuestion(String title, String answer, String type, ArrayList<String> ops, String explains, double errTimes, double datetime, double maxDate, String del) {
         Question question = new Question();
         question.setTitle(title.trim());
         question.setType(type);
@@ -68,6 +68,12 @@ public class QuestionManagerServiceImpl implements QuestionManagerService {
         question.setExplains(explains);
         question.setOps(ops);
         question.setErrTimes(errTimes);
+        question.setDate(datetime);
         return question;
+    }
+
+    @Override
+    public void resetDate(Question que) {
+        que.setDate(0.0);
     }
 }

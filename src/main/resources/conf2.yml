@@ -7,6 +7,8 @@ attributes:
   optEnd: 9 # 选项结束的列
   explain: 10 # 答案解释的列
   errCell: 17 # 错误计数器的列
+  composite: 18
+  date: 19
   record: 26 # 记录答题日志的列
   memory: 27 # 记录上次答题位置
 parameters:
