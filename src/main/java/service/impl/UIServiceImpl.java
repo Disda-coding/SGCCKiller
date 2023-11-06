@@ -117,7 +117,7 @@ public class UIServiceImpl implements UIService {
                 //解决中文乱码问题
                 url = URLDecoder.decode(path + names.get(0), "utf-8");
                 testManagerService.setExcelService(url, 0);
-                testManagerService.getTestData();
+                maxDouble = testManagerService.getTestData();
             }
 
             while (!exitFlag) {
