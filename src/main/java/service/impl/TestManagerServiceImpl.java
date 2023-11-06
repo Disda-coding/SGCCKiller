@@ -11,7 +11,11 @@ import service.QuestionManagerService;
 import service.TestManagerService;
 import utils.CommonUtils;
 
-import java.util.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -289,7 +293,7 @@ public class TestManagerServiceImpl implements TestManagerService {
             } else {
                 System.out.print(+i + ".\033[34m[" + que.getType() + "]\033[m");
                 if (maxVariable != null){
-                    System.out.print("\033[33m[系数为{" + que.getCoef() + '}' + "]\033[m");
+                    System.out.print("\033[33m[系数为{" + new DecimalFormat("#.##").format(que.getCoef()) + '}' + "]\033[m");
                 }
             }
 
