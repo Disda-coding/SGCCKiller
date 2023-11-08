@@ -55,7 +55,7 @@ public class UIServiceImpl implements UIService {
                 "/___/\\___/\\___/\\___/_/|_/_/_/_/\\__/_/   \n" +
                 "                                        \n");
         System.out.println("                                                                                                                      Author: disda-coding.github.io/");
-        System.out.println("                                                                                                                      Version: 1.2.1");
+        System.out.println("                                                                                                                      Version: 1.3.0");
         System.out.println("*********************************************************************************************************************************************************");
     }
 
