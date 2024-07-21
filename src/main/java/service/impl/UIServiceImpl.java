@@ -137,7 +137,8 @@ public class UIServiceImpl implements UIService {
                 if (opt == null || opt.equals("1") || opt.equals("")) {
                     testManagerService.testAll();
                 } else if (opt.equals("4")) {
-                    System.out.println(11);
+                    // 必须得先获取，否则计算没办法实时更新
+                    maxDouble = testManagerService.getTestData();
                     testManagerService.
                             testByIntelligence(maxDouble);
                 } else if (opt.equals("3")) {

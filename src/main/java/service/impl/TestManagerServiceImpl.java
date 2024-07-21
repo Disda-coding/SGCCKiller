@@ -282,7 +282,7 @@ public class TestManagerServiceImpl implements TestManagerService {
             if (maxVariable != null) {
                 double queCoef = (0.7 * (que.getErrTimes() / maxVariable[0]) + 0.3 * (que.getDate() / maxVariable[1]));
                 que.setCoef(queCoef);
-                if (queCoef < 0.7) {
+                if (queCoef < configuration.getCoef()) {
                     continue;
                 }
             }
