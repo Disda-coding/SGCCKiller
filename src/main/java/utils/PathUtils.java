@@ -30,7 +30,7 @@ public class PathUtils {
         try {
             PathUtils.class.getClassLoader().getResource(".").getPath();
         } catch (NullPointerException e) {
-            System.out.println("可能在jar包环境");
+//            System.out.println("可能在jar包环境");
             StringJoiner targetPath = new StringJoiner("/");
             try {
                 String jar_path = PathUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();

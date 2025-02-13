@@ -1,5 +1,6 @@
 package service.impl;
 
+import org.fusesource.jansi.Ansi;
 import service.TestManagerService;
 import service.UIService;
 
@@ -7,6 +8,8 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Scanner;
+
+import static org.fusesource.jansi.Ansi.Color.*;
 
 /**
  * @program: QnA
@@ -122,14 +125,14 @@ public class UIServiceImpl implements UIService {
 
             while (!exitFlag) {
                 System.out.println("************* 选择功能 *************");
-                System.out.println("\033[31m*********  1.测试全部题目  **********");
-                System.out.println("\033[32m********   2. 随机抽样     *********");
-                System.out.println("\033[33m*********  3.测试错误题目  **********");
-                System.out.println("\033[34m*********  4.智能模式测试  **********");
-                System.out.println("\033[35m********   5.显示题目与答案  ********");
-                System.out.println("\033[36m*********  6.查看历史得分  **********");
-                System.out.println("\033[37m********   7.  重置题库   ***********");
-                System.out.println("\033[m*********  8.   退出     ***********");
+                System.out.println(Ansi.ansi().fg(RED).a("*********  1.测试全部题目  **********").reset());
+                System.out.println(Ansi.ansi().fg(GREEN).a("********   2. 随机抽样     *********").reset());
+                System.out.println(Ansi.ansi().fg(YELLOW).a("*********  3.测试错误题目  **********").reset());
+                System.out.println(Ansi.ansi().fg(BLUE).a("*********  4.智能模式测试  **********").reset());
+                System.out.println(Ansi.ansi().fg(MAGENTA).a("********   5.显示题目与答案  ********").reset());
+                System.out.println(Ansi.ansi().fg(CYAN).a("*********  6.查看历史得分  **********").reset());
+                System.out.println(Ansi.ansi().fg(BLACK).a("********   7.  重置题库   ***********").reset());
+                System.out.println(Ansi.ansi().fg(RED).a("*********  8.   退出     ***********").reset());
                 String opt;
                 opt = input.nextLine();
                 double max_err = testManagerService.getMaxErrTimes();

@@ -3,6 +3,7 @@ package service.impl;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.fusesource.jansi.Ansi;
 import pojo.Configuration;
 import pojo.Question;
 import service.ConfigurationService;
@@ -18,6 +19,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.fusesource.jansi.Ansi.Color.*;
 
 /**
  * @program: QnA
@@ -288,12 +291,12 @@ public class TestManagerServiceImpl implements TestManagerService {
             }
             all++;
             if (random) {
-                System.out.print(+k + ".\033[34m[" + que.getType() + "]\033[m");
+                System.out.print(+k + ".[" +Ansi.ansi().fg(BLUE).a( que.getType()).reset()+"]");
                 k++;
             } else {
-                System.out.print(+i + ".\033[34m[" + que.getType() + "]\033[m");
+                System.out.print(+i + ".[" +Ansi.ansi().fg(BLUE).a( que.getType()).reset()+"]");
                 if (maxVariable != null){
-                    System.out.print("\033[33m[系数为{" + new DecimalFormat("#.##").format(que.getCoef()) + '}' + "]\033[m");
+                    System.out.print(Ansi.ansi().fg(YELLOW).a( new DecimalFormat("#.##").format(que.getCoef()) + '}' ).reset());
                 }
             }
 
@@ -325,7 +328,7 @@ public class TestManagerServiceImpl implements TestManagerService {
                     ans = "F";
             }
             if (ans.equals(que.getAnswer())) {
-                System.out.println("\033[32m回答正确\033[m");
+                System.out.println(Ansi.ansi().fg(GREEN).a("回答正确").reset());
                 System.out.println();
                 que.setErrTimes(que.getErrTimes() - configuration.getRatio());
                 excelService.getCellByIndex(i, -configuration.getRatio());
@@ -334,13 +337,13 @@ public class TestManagerServiceImpl implements TestManagerService {
                     printExplains(que);
                 }
             } else if (ans.equals("S") || ans.equals("s")) {
-                System.out.println("\033[1:32m正确答案：" + que.getAnswer() + "\033[m");
-                System.out.println("跳过并重置错误计数器\n");
+                System.out.println(Ansi.ansi().fgGreen().a(Ansi.Attribute.INTENSITY_BOLD).a(que.getAnswer()).reset());
+                System.out.println(Ansi.ansi().fgGreen().a(Ansi.Attribute.INTENSITY_BOLD).a("跳过并重置错误计数器\n").reset());
                 questionManagerService.resetErrTimes(que);
                 excelService.getCellByIndex(i, -2.0);
 //                excelService.getCellByCaseName(que, -2.0);
             } else {
-                System.out.println("\033[1:31m正确答案：" + que.getAnswer() + "\033[m");
+                System.out.println(Ansi.ansi().fgRed().a(Ansi.Attribute.INTENSITY_BOLD).a("正确答案：" + que.getAnswer()).reset());
                 Thread.sleep(10);
                 if (configuration.getEnable_explain() == 1 || configuration.getEnable_explain() == -1) {
                     printExplains(que);
@@ -374,11 +377,11 @@ public class TestManagerServiceImpl implements TestManagerService {
 
     public void printExplains(Question que) {
         if (que.getExplains() == null || que.getExplains().length() == 0) {
-            System.out.println("\033[m");
+            System.out.println("");
             return;
         }
 
-        System.out.print("\033[35m[解析]\033[m ");
+        System.out.print(Ansi.ansi().fg(MAGENTA).a("[解析] ").reset());
         CommonUtils.printLongStuff(que.getExplains(), configuration.getLinesize());
         System.out.println();
     }
@@ -387,7 +390,7 @@ public class TestManagerServiceImpl implements TestManagerService {
         int size = questions.size();
         int beg = 1, end = size;
         Scanner input = new Scanner(System.in);
-        System.out.println("请输入题号范围，必须小于等于\033[36m" + size + "\033[m并用空格or-相连，回车从\033[34m" + getCurrentBeg() + "\033[m开始默认\033[35m" + configuration.getSample() + "\033[m题！");
+        System.out.println("请输入题号范围，必须小于等于"+Ansi.ansi().fg(CYAN).a(size).reset() + "并用空格or-相连，回车从"+Ansi.ansi().fg(BLUE).a(getCurrentBeg()).reset() + "开始默认" + Ansi.ansi().fg(MAGENTA).a(configuration.getSample()).reset() + "题！");
         String in = input.nextLine();
         String[] nums = in.split(" |-");
         if (nums.length == 2) {
@@ -425,7 +428,7 @@ public class TestManagerServiceImpl implements TestManagerService {
             for (int j = 0; j < que.ops.size() && !que.ops.get(j).isEmpty(); j++) {
                 System.out.println(seq[j] + ": " + que.ops.get(j));
             }
-            System.out.println("\033[31m正确答案：" + que.getAnswer() + "\033[m");
+            System.out.println(Ansi.ansi().fg(RED).a("正确答案：" + que.getAnswer()).reset());
         }
     }
 
