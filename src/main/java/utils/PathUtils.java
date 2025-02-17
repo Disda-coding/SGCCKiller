@@ -36,7 +36,7 @@ public class PathUtils {
                 String jar_path = PathUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
                 String[] pathArray = jar_path.split("/");
                 for (int i = 0; i < pathArray.length - 1; i++) {
-                    System.out.println(targetPath);
+//                    System.out.println(targetPath);
                     targetPath = targetPath.add(pathArray[i]);
                 }
                 path = targetPath.toString()+'/';
