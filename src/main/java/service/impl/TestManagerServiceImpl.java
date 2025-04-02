@@ -129,7 +129,7 @@ public class TestManagerServiceImpl implements TestManagerService {
                 }
             }
             if ((queType.equals("问答题") || queType.equals("填空题")))
-                continue;
+                questions.add(questionManagerService.createQuestion(queTitle, queAns, queType, ops, explains, errTimes, datetime, maxDate, configuration.getDel()));
             else {
                 if (configuration.getIsOrder() == 1 || queType.equals("判断题")) {
                     questions.add(questionManagerService.createQuestion(queTitle, queAns, queType, ops, explains, errTimes, datetime, maxDate, configuration.getDel()));
@@ -448,8 +448,10 @@ public class TestManagerServiceImpl implements TestManagerService {
         Scanner input = new Scanner(System.in);
         String in = input.nextLine();
         int beg = configuration.getSample();
+
         if (in.equals("")) {
-            System.out.println("默认抽取 " + configuration.getSample() + " 道题\n");
+            beg = beg < size ? beg :size;
+            System.out.println("默认抽取 " + beg + " 道题\n");
         } else if (!CommonUtils.isNumeric(in)) {
             System.out.println("请输入数字");
         } else {

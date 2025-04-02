@@ -12,6 +12,7 @@ attributes:
   record: 26 # 记录答题日志的列
   memory: 27 # 记录上次答题位置
 parameters:
+  coef: 0.8
   qStart: 1 # 开始行
   linesize: 50 # 一行显示是字符数量
   easy: 2 # 错误easy=<
@@ -20,7 +21,7 @@ parameters:
   calTime: 1 # 是否计时
   isOrder: 0 # 选项是否有序
   enable_explain: 1 #是否开启解释 0不开启，1开启，-1开启所有解释（回答正确也会输出）
-  ratio: 0.5 # 错题转换成正确题目的比例 0.5代表需要2次才能转为正确的题
+  ratio: 0.2 # 错题转换成正确题目的比例 0.5代表需要2次才能转为正确的题
   delimeter:  # 多选题分隔符设置
   sample: 100 #采样默认的大小,包括顺序刷题里面的设置
   includes_judge: 1 # 是否包含选择题0不包含，1包含
